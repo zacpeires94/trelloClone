@@ -13,11 +13,19 @@ const NavbarContainer = styled.nav`
       return `
             padding: 8px 4px 8px 8px;
             position: relative;
+            background: rgba(0,0,0,.24);
           `;
     }
   }}
   span {
     display: flex;
+    ${props => {
+        if (props.secondaryNav) {
+            return`
+                max-height: 32px;
+            `
+        }
+    }}
   }
 `;
 
@@ -42,11 +50,11 @@ const NavbarButton = styled.div`
   background-color: hsla(0, 0%, 100%, 0.3);
   cursor: pointer;
   display: flex;
-    align-items: center;
-    p {
-        font-size: 14px;
-        margin: 0;
-    }
+  align-items: center;
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
   ${(props) => {
     if (props.showBoards) {
       return `
@@ -70,23 +78,33 @@ const NavbarButton = styled.div`
                 justify-content: center;
             `;
     } else if (props.projectName) {
-        return`
+      return `
             padding: 0 12px;
             width: unset;
-        `
-    } 
+        `;
+    } else if (props.invite) {
+      return `
+            width: unset;
+            padding: 0 12px;
+            font-size: 14px;
+            margin-left: 4px;
+        `;
+    }
   }}
 
-  ${props => {
+  ${(props) => {
     if (props.projectMember) {
-        return`
+      return `
             height: 28px;
             width: 28px;
+            :hover {
+                background-color: #c1c7d0;
+            }
             p {
                 font-size: 12px;
 
             }
-        `
+        `;
     }
   }}
 `;
@@ -94,10 +112,10 @@ const NavbarButton = styled.div`
 const Divider = styled.span`
   dislay: block;
   float: left;
-  border-left: 1px solid hsla(0,0%,100%,.24);
+  border-left: 1px solid hsla(0, 0%, 100%, 0.24);
   height: 16px;
   margin: 8px 8px 12px 4px;
-`
+`;
 
 export const NavbarPrimary = () => {
   return (
@@ -118,32 +136,29 @@ export const NavbarPrimary = () => {
 };
 
 const ProjectMemberContainers = styled.div`
-    display: flex;
-    align-items: center;
-`
+  display: flex;
+  align-items: center;
+`;
 
 export const NavbarSecondary = () => {
   return (
     <NavbarContainer secondaryNav>
-        <span>
-      <BoardNameTitleBox>
-        <p>Board Name</p>
-      </BoardNameTitleBox>
-      <NavbarButton />
-    <Divider />
-    <NavbarButton projectName>
-        <p>
-        Project Name
-        </p>
-    </NavbarButton>
-    <Divider />
-    <ProjectMemberContainers>
-        <NavbarButton round projectMember>
-            <p>
-                ZP
-            </p>
+      <span secondaryNav>
+        <BoardNameTitleBox>
+          <p>Board Name</p>
+        </BoardNameTitleBox>
+        <NavbarButton />
+        <Divider />
+        <NavbarButton projectName>
+          <p>Project Name</p>
         </NavbarButton>
-    </ProjectMemberContainers>
+        <Divider />
+        <ProjectMemberContainers>
+          <NavbarButton round projectMember>
+            <p>ZP</p>
+          </NavbarButton>
+        </ProjectMemberContainers>
+        <NavbarButton invite>Invite</NavbarButton>
       </span>
     </NavbarContainer>
   );
