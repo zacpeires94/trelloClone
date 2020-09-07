@@ -100,11 +100,14 @@ const ButtonContainer = styled.div`
     display: flex;
 `
 
-const EnterListTitle = ({showDropDownForNamingNewList}) => {
+export const EnterListTitle = ({showDropDownForNamingNewList, userLists, setUserLists, setNewListName, newListName}) => {
+    // console.log(props)ds
+    console.log(showDropDownForNamingNewList, newListName)
+    // can't pass props two levels down. Use React.children in AddListButton, and import EnterListTile into HomePage
     return (
         <EnterListTitleContainer showDropDownForNamingNewList={showDropDownForNamingNewList}>
-            <EnterListTitleInput placeholder="Enter list title..." autoComplete="off"/>
-            <ButtonContainer>
+            <EnterListTitleInput placeholder="Enter list title..." autoComplete="off" value={newListName} onChange={(event) => setNewListName(event.target.value)}/>
+             <ButtonContainer onClick={() => {setUserLists([...userLists, {name: newListName, cards: []}])} } >
             <AddCardButton newList>
                 Add List
             </AddCardButton>
@@ -113,9 +116,7 @@ const EnterListTitle = ({showDropDownForNamingNewList}) => {
     )
 }
 
-export const AddListButton = () => {
-    const [showDropDownForNamingNewList, setShowDropDownForNamingNewList] = useState(false);
-    console.log(showDropDownForNamingNewList)
+export const AddListButton = ({children, showDropDownForNamingNewList, setShowDropDownForNamingNewList}) => {
 
     return (
         <FullWidthContainer>
@@ -124,7 +125,9 @@ export const AddListButton = () => {
             <ColumnTitle white>
             Add another list</ColumnTitle>
         </AddListButtonContainer>
-        <EnterListTitle showDropDownForNamingNewList={showDropDownForNamingNewList} />
+        {
+            children
+        }
         </ FullWidthContainer>
     )
 }

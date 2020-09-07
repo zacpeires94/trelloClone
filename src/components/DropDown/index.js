@@ -123,7 +123,7 @@ export const DropDown = ({cards, listName}) => {
           );
         })}
       </WhiteListContainer>
-      {taskList[taskList.length - 1].name.length < 1 ? (
+      {taskList.length && taskList[taskList.length - 1].name.length < 1 ? (
         <DropDownHeaderAndFooter paddingBottom>
           <AddCardButton onClick={addCard}>Add Card</AddCardButton>
         </DropDownHeaderAndFooter>

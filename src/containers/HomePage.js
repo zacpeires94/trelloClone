@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { NavbarPrimary, NavbarSecondary } from "../components/Navbar";
 import { DropDown } from "../components/DropDown";
-import { AddListButton } from "../components/Button";
+import { AddListButton, EnterListTitle } from "../components/Button";
 
 const HomePageContainer = styled.div`
   background: #e48a9a;
@@ -15,6 +15,8 @@ const DropDownContainer = styled.div`
 
 export default () => {
     const [userLists, setUserLists] = useState([]);
+    const [newListName, setNewListName] = useState("")
+    const [showDropDownForNamingNewList, setShowDropDownForNamingNewList] = useState(false);
 
     useEffect(() => {
         setUserLists(
@@ -29,6 +31,8 @@ export default () => {
         return null;
     }
 
+    console.log(showDropDownForNamingNewList, userLists)
+
   return (
     <HomePageContainer>
       <NavbarPrimary />
@@ -38,12 +42,17 @@ export default () => {
               userLists.map((list, index) => {
                   console.log(list)
                   return (
-                      <DropDown cards={list.cards} listName={list.name} />
+                      <DropDown cards={list.cards} listName={list.name}/>
                   )
               })
           }
-        <AddListButton />
+        <AddListButton  showDropDownForNamingNewList={showDropDownForNamingNewList} setShowDropDownForNamingNewList={setShowDropDownForNamingNewList}>
+            <EnterListTitle  showDropDownForNamingNewList={showDropDownForNamingNewList} setShowDropDownForNamingNewList={setShowDropDownForNamingNewList} setUserLists={setUserLists} userLists={userLists} setNewListName={setNewListName} newListName={newListName}/>
+        </AddListButton>
       </DropDownContainer>
     </HomePageContainer>
   );
 };
+
+
+// current issue is that taskList.name is 
