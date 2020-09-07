@@ -29,6 +29,9 @@ const NavbarContainer = styled.nav`
   }
 `;
 
+const SecondaryNavInnerContainer = styled.span`
+`
+
 const BoardNameTitleBox = styled.div`
   padding-right: 4px;
   height: 32px;
@@ -39,6 +42,7 @@ const BoardNameTitleBox = styled.div`
     font-weight: 700;
     padding: 0 12px;
     margin: 0;
+    color: white;
   }
 `;
 
@@ -54,6 +58,7 @@ const NavbarButton = styled.div`
   p {
     font-size: 14px;
     margin: 0;
+    color: white;
   }
   ${(props) => {
     if (props.showBoards) {
@@ -76,6 +81,9 @@ const NavbarButton = styled.div`
                 font-weight: 700;
                 display: flex;
                 justify-content: center;
+                p {
+                    color: black;
+                }
             `;
     } else if (props.projectName) {
       return `
@@ -143,7 +151,7 @@ const ProjectMemberContainers = styled.div`
 export const NavbarSecondary = () => {
   return (
     <NavbarContainer secondaryNav>
-      <span secondaryNav>
+      <SecondaryNavInnerContainer secondaryNav>
         <BoardNameTitleBox>
           <p>Board Name</p>
         </BoardNameTitleBox>
@@ -158,8 +166,10 @@ export const NavbarSecondary = () => {
             <p>ZP</p>
           </NavbarButton>
         </ProjectMemberContainers>
-        <NavbarButton invite>Invite</NavbarButton>
-      </span>
+        <NavbarButton invite><p>
+        Invite
+            </p></NavbarButton>
+      </SecondaryNavInnerContainer>
     </NavbarContainer>
   );
 };
