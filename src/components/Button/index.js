@@ -37,6 +37,9 @@ box-sizing: border-box;
 padding-left: 12px;
 height: 40px;
 margin: 8px;
+:hover {
+    background-color: hsla(0,0%,100%,.32);
+}
 `
 
 export const AddListButton = () => {

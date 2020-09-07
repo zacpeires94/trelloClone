@@ -73,13 +73,9 @@ const WhiteListCard = styled.textarea`
 `;
 
 
-export const DropDown = () => {
-  const taskListArray = [
-    { name: "Build this project" },
-    { name: "Build this project" },
-    { name: "Build this project" },
-  ];
-  const [taskList, setTaskList] = useState(taskListArray);
+export const DropDown = ({cards, listName}) => {
+  const [taskList, setTaskList] = useState(cards);
+  console.log(taskList)
   const [newCardTitle, setNewCardTitle] = useState("");
   const newTextBoxRef = useRef(null);
 
@@ -103,11 +99,12 @@ export const DropDown = () => {
     setTaskList([...newTaskList, { name: newCardTitle }]);
     setNewCardTitle("");
   };
+  
 
   return (
     <DropDownContainer>
       <DropDownHeaderAndFooter>
-        <ColumnTitle>To do</ColumnTitle>
+        <ColumnTitle>{listName}</ColumnTitle>
       </DropDownHeaderAndFooter>
       <WhiteListContainer>
         {taskList.map((task, index) => {

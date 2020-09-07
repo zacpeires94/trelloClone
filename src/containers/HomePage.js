@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { NavbarPrimary, NavbarSecondary } from "../components/Navbar";
 import { DropDown } from "../components/DropDown";
@@ -14,12 +14,34 @@ const DropDownContainer = styled.div`
 `;
 
 export default () => {
+    const [userLists, setUserLists] = useState([]);
+
+    useEffect(() => {
+        setUserLists(
+            [{name: 'To do', cards: [{ name: "Build this project" },
+            { name: "Build this project" },
+            { name: "Build this project" }]}]
+        )
+        console.log(userLists)
+    }, [setUserLists])
+
+    if (!userLists.length) {
+        return null;
+    }
+
   return (
     <HomePageContainer>
       <NavbarPrimary />
       <NavbarSecondary />
       <DropDownContainer>
-        <DropDown />
+          {
+              userLists.map((list, index) => {
+                  console.log(list)
+                  return (
+                      <DropDown cards={list.cards} listName={list.name} />
+                  )
+              })
+          }
         <AddListButton />
       </DropDownContainer>
     </HomePageContainer>
