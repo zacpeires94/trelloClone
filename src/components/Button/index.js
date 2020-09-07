@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { ColumnTitle } from '../Typography';
 import { PlusSign } from '../Icon';
@@ -24,30 +24,108 @@ export const AddCardButton = styled.button`
   :hover {
     background-color: #61bd4f;
   }
+  ${props => {
+      if (props.newList) {
+          return`
+            margin: 4px 0 0;
+          `
+      }
+  }}
 `;
+
+const FullWidthContainer = styled.div`
+  width: 272px;
+  margin: 8px;
+`
 
 const AddListButtonContainer = styled.div`
 background-color: hsla(0,0%,100%,.24);
 cursor: pointer;
 border-radius: 3px;
 width: 272px;
-display: flex;
 align-items: center;
+display: flex;
 box-sizing: border-box;
 padding-left: 12px;
 height: 40px;
-margin: 8px;
+
 :hover {
     background-color: hsla(0,0%,100%,.32);
 }
+${props => {
+    if (props.showDropDownForNamingNewList) {
+        return`
+            display: none;
+        `
+    }
+}}
 `
 
-export const AddListButton = () => {
+const EnterListTitleContainer = styled.div`
+background-color: #ebecf0;
+border-radius: 3px;
+width: 100%;
+height: 0;
+overflow: hidden;
+transition: height 85ms;
+${props => {
+    if (props.showDropDownForNamingNewList) {
+        return`
+        box-sizing: border-box;
+        padding: 4px;
+        height: 77px;
+        `
+    }
+}}
+`
+
+const EnterListTitleInput = styled.input`
+background: #fff;
+border: none;
+box-shadow: inset 0 0 0 2px #0079bf;
+display: block;
+margin: 0;
+width: 100%;
+box-sizing: border-box;
+border-radius: 3px;
+padding: 8px 12px;
+font-size: 14px;
+:focus {
+    outline: none;
+  }
+`
+
+const ButtonContainer = styled.div`
+    width: 100%;
+    display: flex;
+`
+
+const EnterListTitle = ({showDropDownForNamingNewList}) => {
     return (
-        <AddListButtonContainer>
+        <EnterListTitleContainer showDropDownForNamingNewList={showDropDownForNamingNewList}>
+            <EnterListTitleInput placeholder="Enter list title..." autoComplete="off"/>
+            <ButtonContainer>
+            <AddCardButton newList>
+                Add List
+            </AddCardButton>
+            </ButtonContainer>
+        </EnterListTitleContainer>
+    )
+}
+
+export const AddListButton = () => {
+    const [showDropDownForNamingNewList, setShowDropDownForNamingNewList] = useState(false);
+    console.log(showDropDownForNamingNewList)
+
+    return (
+        <FullWidthContainer>
+        <AddListButtonContainer onClick={() => setShowDropDownForNamingNewList(true)} showDropDownForNamingNewList={showDropDownForNamingNewList}>
             <PlusSign white/>
             <ColumnTitle white>
             Add another list</ColumnTitle>
         </AddListButtonContainer>
+        <EnterListTitle showDropDownForNamingNewList={showDropDownForNamingNewList} />
+        </ FullWidthContainer>
     )
 }
+
