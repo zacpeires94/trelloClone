@@ -70,7 +70,7 @@ const WhiteListCard = styled.textarea`
     text-align: left;
     font-size: 14px;
     cursor: pointer;
-    
+    :focus { outline: none; } 
     ${ props => {
         if (props.newCard) {
             return`
@@ -129,12 +129,12 @@ background-color: #5aac44;
 export const DropDown = () => {
     const taskListArray = [{name: 'Build this project'}, {name: 'Build this project'}, {name: 'Build this project'}]
     const [taskList, setTaskList] = useState(taskListArray)
+    const [newCardTitle, setNewCardTitle] = useState("")
     const newTextBoxRef = useRef(null)
 
     const createNewCard = () => {
         console.log(newTextBoxRef.current)
         setTaskList([...taskList, {name: ""}])
-        console.log(taskList)
     }
 
     useEffect(() => {
@@ -142,6 +142,16 @@ export const DropDown = () => {
             newTextBoxRef.current.focus();
         }
     },[createNewCard])
+
+    const enterTitle = (event) => {
+        setNewCardTitle(event.target.value)
+    }
+
+    const addCard = () => {
+        const newTaskList = taskList.slice(0, taskList.length -1)
+        setTaskList([...newTaskList, {name: newCardTitle}])
+        setNewCardTitle("")
+    }
 
     return (
         <DropDownContainer>
@@ -160,8 +170,8 @@ export const DropDown = () => {
                             </WhiteListCard>
                             ) :
                             (
-                                <WhiteListCard newCard ref={newTextBoxRef}>
-                                    Enter a title for this card...
+                                <WhiteListCard newCard placeholder="Enter a title for this card..." ref={newTextBoxRef} value={newCardTitle} onChange={event => enterTitle(event)}>
+                                    {newCardTitle}
                                 </WhiteListCard>
                             )
                          
@@ -173,7 +183,7 @@ export const DropDown = () => {
             {
                 taskList[taskList.length - 1].name.length < 1 ? (
                     <DropDownHeaderAndFooter paddingBottom>
-                        <AddCardButton>
+                        <AddCardButton onClick={addCard}>
                             Add Card
                         </AddCardButton>
                     </DropDownHeaderAndFooter>
