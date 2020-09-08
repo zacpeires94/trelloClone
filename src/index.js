@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import history from './history';
 import { Router } from 'react-router-dom';
+import "./utils/firebase";
 
 ReactDOM.render(
   <Router history={history}>
