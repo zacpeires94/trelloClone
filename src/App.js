@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
-import { Switch, Route } from 'react-router-dom';
-import { HomePage, SignupPage, CreateFirstBoard } from './containers'
+import React, { useEffect, useState } from "react";
+import logo from "./logo.svg";
+import { Switch, Route } from "react-router-dom";
+import { HomePage, SignupPage, CreateFirstBoard } from "./containers";
 import firebase from "firebase";
-import './App.css';
+import "./App.css";
 
 const App = () => {
   const [hasCheckedForUser, setHasCheckedForUser] = useState(false);
@@ -11,7 +11,7 @@ const App = () => {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         setUid(user.uid);
         setEmail(user.email);
@@ -23,21 +23,29 @@ const App = () => {
     // console.log(uid)
   });
 
-  if (!hasCheckedForUser) {{}
+  if (!hasCheckedForUser) {
+    {
+    }
     return <div />;
   }
 
   return (
     <div className="App">
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/sign-up" render={props => (
-            <SignupPage user={uid} />
-           )} />
-          <Route exact path="/create-first-board" component={CreateFirstBoard} />
-        </Switch>
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route
+          exact
+          path="/sign-up"
+          render={(props) => <SignupPage user={uid} />}
+        />
+        <Route
+          exact
+          path="/create-first-board"
+          render={(props) => <CreateFirstBoard user={uid} />}
+        />
+      </Switch>
     </div>
-  )
-}
+  );
+};
 
 export default App;
