@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import { Switch, Route } from 'react-router-dom';
-import { HomePage } from './containers'
+import { HomePage, SignupPage } from './containers'
 import firebase from "firebase";
 import './App.css';
 
@@ -20,10 +20,10 @@ const App = () => {
       setHasCheckedForUser(true);
     });
 
-    console.log(uid)
+    // console.log(uid)
   });
 
-  if (!hasCheckedForUser) {
+  if (!hasCheckedForUser) {{}
     return <div />;
   }
 
@@ -31,7 +31,9 @@ const App = () => {
     <div className="App">
         <Switch>
           <Route exact path="/" component={HomePage} />
-          {/* <Route exact path="/sign-up" component={SignupPage} /> */}
+          <Route exact path="/sign-up" render={props => (
+            <SignupPage user={uid} />
+           )} />
         </Switch>
     </div>
   )

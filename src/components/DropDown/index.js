@@ -5,6 +5,7 @@ import { PlusSign } from '../Icon';
 import styled from "styled-components";
 
 const DropDownContainer = styled.div`
+  min-width: 272px;
   width: 272px;
   margin-top: 8px;
   margin-left: 8px;
@@ -12,6 +13,7 @@ const DropDownContainer = styled.div`
   padding: 0 8px;
   background-color: #ebecf0;
   border-radius: 3px;
+  height: max-content;
 `;
 
 const DropDownHeaderAndFooter = styled.div`
@@ -27,6 +29,20 @@ const DropDownHeaderAndFooter = styled.div`
       return `
                 padding-bottom: 8px
             `;
+    }
+  }}
+  ${props => {
+    if (props.noCardsInList) {
+      return`
+      padding-bottom: 12px;
+      `
+    }
+  }}
+  ${props => {
+    if (props.footer) {
+      return`
+        min-height: 38px;
+      `
     }
   }}
 `;
@@ -51,9 +67,7 @@ const WhiteListCard = styled.textarea`
   min-height: 20px;
   text-align: left;
   font-size: 14px;
-
   box-shadow: 0 1px 0 rgba(9,30,66,.25);
-
   cursor: pointer;
   :focus {
     outline: none;
@@ -99,6 +113,9 @@ export const DropDown = ({cards, listName}) => {
     setTaskList([...newTaskList, { name: newCardTitle }]);
     setNewCardTitle("");
   };
+
+
+  console.log(taskList.length)
   
 
   return (
@@ -128,7 +145,7 @@ export const DropDown = ({cards, listName}) => {
           <AddCardButton onClick={addCard}>Add Card</AddCardButton>
         </DropDownHeaderAndFooter>
       ) : (
-        <DropDownHeaderAndFooter onClick={createNewCard}>
+        <DropDownHeaderAndFooter onClick={createNewCard} footer noCardsInList={taskList.length === 0 ? true : false}>
           <PlusSign />
           <ColumnTitle grey>Add another card</ColumnTitle>
         </DropDownHeaderAndFooter>
