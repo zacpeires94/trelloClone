@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import { Switch, Route } from 'react-router-dom';
-import { HomePage, SignupPage } from './containers'
+import { HomePage, SignupPage, CreateFirstBoard } from './containers'
 import firebase from "firebase";
 import './App.css';
 
@@ -34,6 +34,7 @@ const App = () => {
           <Route exact path="/sign-up" render={props => (
             <SignupPage user={uid} />
            )} />
+          <Route exact path="/create-first-board" component={CreateFirstBoard} />
         </Switch>
     </div>
   )
