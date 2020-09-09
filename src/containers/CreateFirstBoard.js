@@ -228,6 +228,15 @@ const WhiteSquare = styled.div`
   border-radius: 3.75px;
   box-shadow: inset 0 -1px 0 0 #dfe1e6;
   background-color: #fff;
+  p {
+    padding: 9px 10px 11px;
+    font-size: 16px;
+    letter-spacing: -.2px;
+    line-height: 20px;
+    margin: 0;
+    word-break: break-word;
+}
+  }
   @media (max-width: 1680px) {
     min-height: 32px;
     width: 136px;
@@ -463,14 +472,14 @@ Add titles for a few cards in your <b>{listNames[0]}</b> list:
 <BoardNamingInput
           value={cardNames[0]}
           onChange={(event) =>
-            setCardNames([cardNames[0], event.target.value, cardNames[2]])
+            setCardNames([event.target.value, cardNames[1], cardNames[2]])
           }
           maxLength="32"
         />
         <BoardNamingInput
           value={cardNames[1]}
           onChange={(event) =>
-            setCardNames([cardNames[0], cardNames[1], event.target.value])
+            setCardNames([cardNames[0], event.target.value, cardNames[2]])
           }
           maxLength="32"
         />
@@ -569,9 +578,21 @@ export default ({ user }) => {
           <HorizontalContainer>
             <GreyUnitOutline first>
               <TitleText>{listNames[0]}</TitleText>
-              <WhiteSquare />
-              <WhiteSquare />
-              <WhiteSquare />
+              <WhiteSquare>
+                <p>
+              {cardNames[0]}
+              </p>
+              </WhiteSquare>
+              <WhiteSquare>
+                <p>
+              {cardNames[1]}
+              </p>
+              </ WhiteSquare>
+              <WhiteSquare>
+                <p>
+              {cardNames[2]}
+              </p>
+              </WhiteSquare>
             </GreyUnitOutline>
             <GreyUnitOutline>
               <TitleText>{listNames[1]}</TitleText>
