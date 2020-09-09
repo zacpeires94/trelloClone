@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Chevron } from '../components/Icon';
-import { firestore } from '../utils/firebase';
+import { Chevron } from "../components/Icon";
+import { firestore } from "../utils/firebase";
 
 const CreateFirstBoardContainer = styled.div`
   height: 100vh;
@@ -164,14 +164,14 @@ const GreyUnitOutline = styled.div`
 `;
 
 const FirstColumnTitle = styled.p`
-font-size: 24px;
-overflow: unset;
-background: unset;
-margin: 0 0 12px 0;
-width: unset;
-color: black;
-font-weight: bold;
-`
+  font-size: 24px;
+  overflow: unset;
+  background: unset;
+  margin: 0 0 12px 0;
+  width: unset;
+  color: black;
+  font-weight: bold;
+`;
 
 const TitleText = styled.p`
   height: 24px;
@@ -272,7 +272,7 @@ const WhiteSquare = styled.div`
   }}
 `;
 
-const FirstColumn = styled.div`
+const FirstColumnContainer = styled.div`
   width: 60%;
   max-height: 100vh;
   display: flex;
@@ -298,6 +298,14 @@ const FirstColumnBodyText = styled.p`
   margin-top: 0;
   margin-bottom: 24px;
   letter-spacing: -0.45px;
+  ${props => {
+    if (props.noMargin) {
+      return`
+        margin-bottom: 0;
+      `
+    }
+  }
+  }}
 `;
 
 const BoardNamingInput = styled.input`
@@ -324,8 +332,7 @@ const BoardNamingInput = styled.input`
 `;
 
 const SubmitBoardNameButton = styled.button`
-
-  background: rgba(9,30,66,.04);
+  background: rgba(9, 30, 66, 0.04);
   color: #fff;
   cursor: not-allowed;
   display: flex;
@@ -345,11 +352,11 @@ const SubmitBoardNameButton = styled.button`
   svg {
     height: 23px;
     width: 23px;
-    fill:  #b3bac5;
-}
-  ${props => {
-      if (props.boardName) {
-          return`
+    fill: #b3bac5;
+  }
+  ${(props) => {
+    if (props.boardName) {
+      return `
           background: #0079bf;
           cursor: pointer;
           :hover {
@@ -358,66 +365,222 @@ const SubmitBoardNameButton = styled.button`
           svg {
              fill: white; 
           }
-          `
-      }
+          `;
+    }
   }}
-
 `;
+
+const NameBoard = ({ setWidgetCurrentlyShown, boardName, setBoardName }) => {
+  return (
+    <FirstColumnContainer>
+      <FirstColumnTextContainer>
+        <FirstColumnTitle firstColumn>
+          Welcome to Trello-Clone!
+        </FirstColumnTitle>
+        <FirstColumnBodyText>
+          You can organize just about anything with a Trello board(that thing
+          over there 👉).
+        </FirstColumnBodyText>
+        <FirstColumnBodyText noMargin>
+          Start by naming your board, something related to the project you are
+          working on, or what you need to get done.
+        </FirstColumnBodyText>
+        <BoardNamingInput
+          placeholder="e.g. Vacation Planning"
+          value={boardName}
+          onChange={(event) => setBoardName(event.target.value)}
+          maxLength="32"
+        />
+        <SubmitBoardNameButton
+          onClick={() => setWidgetCurrentlyShown("list board")}
+          boardName={boardName}
+        >
+          <Chevron />
+        </SubmitBoardNameButton>
+      </FirstColumnTextContainer>
+    </FirstColumnContainer>
+  );
+};
+
+const AddLists = ({ setWidgetCurrentlyShown, listNames, setListNames }) => {
+  return (
+    <FirstColumnContainer>
+      <FirstColumnTextContainer>
+        <FirstColumnTitle firstColumn>
+          Create structure with lists
+        </FirstColumnTitle>
+        <FirstColumnBodyText>
+          A list is a collection of cards. It can be a set of ideas, a group of
+          tasks, or a stage in a project. You'll add cards to your list next.
+        </FirstColumnBodyText>
+        <FirstColumnBodyText noMargin>
+          A lot of people like to start with:
+        </FirstColumnBodyText>
+        <BoardNamingInput
+          value={listNames[0]}
+          onChange={(event) =>
+            setListNames([event.target.value, listNames[1], listNames[2]])
+          }
+          maxLength="16"
+        />
+        <BoardNamingInput
+          value={listNames[1]}
+          onChange={(event) =>
+            setListNames([listNames[0], event.target.value, listNames[2]])
+          }
+          maxLength="16"
+        />
+        <BoardNamingInput
+          value={listNames[2]}
+          onChange={(event) =>
+            setListNames([listNames[0], listNames[1], event.target.value])
+          }
+          maxLength="16"
+        />
+        <SubmitBoardNameButton boardName onClick={() => setWidgetCurrentlyShown("name cards")}>
+          <Chevron />
+        </SubmitBoardNameButton>
+      </FirstColumnTextContainer>
+    </FirstColumnContainer>
+  );
+};
+
+const CreateCards = ({ cardNames, setCardNames, listNames }) => {
+  console.log(cardNames)
+  return (
+    <FirstColumnContainer>
+      <FirstColumnTextContainer>
+<FirstColumnTitle firstColumn>
+  Take a load off with cards
+</FirstColumnTitle>
+<FirstColumnBodyText>
+Make cards for things you need to do, organize, or just get out of your head.
+</FirstColumnBodyText>
+<FirstColumnBodyText noMargin>
+Add titles for a few cards in your <b>{listNames[0]}</b> list:
+</FirstColumnBodyText>
+
+<BoardNamingInput
+          value={cardNames[0]}
+          onChange={(event) =>
+            setCardNames([cardNames[0], event.target.value, cardNames[2]])
+          }
+          maxLength="32"
+        />
+        <BoardNamingInput
+          value={cardNames[1]}
+          onChange={(event) =>
+            setCardNames([cardNames[0], cardNames[1], event.target.value])
+          }
+          maxLength="32"
+        />
+          <BoardNamingInput
+          value={cardNames[2]}
+          onChange={(event) =>
+            setCardNames([cardNames[0], cardNames[1], event.target.value])
+          }
+          maxLength="32"
+        />
+
+<SubmitBoardNameButton boardName >
+  <Chevron />
+</SubmitBoardNameButton>
+</FirstColumnTextContainer>
+   
+  </FirstColumnContainer>
+  )
+}
+
+
+
+const FirstColumn = ({
+  widgetCurrentlyShown,
+  setWidgetCurrentlyShown,
+  listNames,
+  setListNames,
+  boardName,
+  setBoardName,
+  cardNames,
+  setCardNames
+}) => {
+  if (widgetCurrentlyShown === "name board") {
+    return (
+      <NameBoard
+        setWidgetCurrentlyShown={setWidgetCurrentlyShown}
+        boardName={boardName}
+        setBoardName={setBoardName}
+      />
+    );
+  } else if (widgetCurrentlyShown === "list board") {
+    return (
+      <AddLists
+        setWidgetCurrentlyShown={setWidgetCurrentlyShown}
+        listNames={listNames}
+        setListNames={setListNames}
+      />
+    );
+  } else if (widgetCurrentlyShown === "name cards") {
+    return (
+      <CreateCards 
+      setWidgetCurrentlyShown={setWidgetCurrentlyShown}
+      cardNames={cardNames}
+      setCardNames={setCardNames}
+      listNames={listNames}
+    />
+    )
+  } 
+
+};
 
 export default ({ user }) => {
   const [boardName, setBoardName] = useState("");
-  console.log(boardName);
-  console.log(user)
+  const [listNames, setListNames] = useState(["Things To Do", "Doing", "Done"]);
+  const [cardNames, setCardNames] = useState(["", "", ""]);
+  const [widgetCurrentlyShown, setWidgetCurrentlyShown] = useState(
+    "name board"
+  );
 
-    const addListToUser = async () => {
-        console.log('clicked')
-        await firestore.collection("users").doc(user).collection("boards").add({
-            name: boardName
-        })
-    }
+  const addFirstBoardToUser = async () => {
+    // should actually be add first boards and lists and will add the lists to the board as well
+    console.log("clicked");
+    await firestore.collection("users").doc(user).collection("boards").add({
+      name: boardName,
+    });
+    setWidgetCurrentlyShown("listNames");
+  };
 
   return (
     <CreateFirstBoardContainer>
-      <FirstColumn>
-        <FirstColumnTextContainer>
-          <FirstColumnTitle firstColumn>Welcome to Trello-Clone!</FirstColumnTitle>
-          <FirstColumnBodyText>
-            You can organize just about anything with a Trello board(that thing
-            over there 👉).
-          </FirstColumnBodyText>
-          <FirstColumnBodyText>
-            Start by naming your board, something related to the project you are
-            working on, or what you need to get done.
-          </FirstColumnBodyText>
-          <BoardNamingInput
-            placeholder="e.g. Vacation Planning"
-            value={boardName}
-            onChange={(event) => setBoardName(event.target.value)}
-            maxLength="32"
-          />
-          <SubmitBoardNameButton onClick={addListToUser} boardName={boardName}>
-                <Chevron />
-          </SubmitBoardNameButton>
-        </FirstColumnTextContainer>
-      </FirstColumn>
-      <SecondColumn>
+      {/* <NameBoard setWidgetCurrentlyShown={setWidgetCurrentlyShown} boardName={boardName} setBoardName={setBoardName}/>
+      <AddLists setWidgetCurrentlyShown={setWidgetCurrentlyShown} listNames={listNames} setListNames={setListNames}/> */}
+      <FirstColumn
+        widgetCurrentlyShown={widgetCurrentlyShown}
+        setWidgetCurrentlyShown={setWidgetCurrentlyShown}
+        boardName={boardName}
+        setBoardName={setBoardName}
+        listNames={listNames}
+        setListNames={setListNames}
+        cardNames={cardNames}
+        setCardNames={setCardNames}
+      />
+      <SecondColumn listNames>
         <TrelloMockUpContainer>
           <TranslucentBox boardName={boardName}>{boardName}</TranslucentBox>
           <HorizontalContainer>
             <GreyUnitOutline first>
-              <TitleText>Things To Do</TitleText>
+              <TitleText>{listNames[0]}</TitleText>
               <WhiteSquare />
               <WhiteSquare />
               <WhiteSquare />
             </GreyUnitOutline>
             <GreyUnitOutline>
-              <TitleText>Doing</TitleText>
+              <TitleText>{listNames[1]}</TitleText>
               <WhiteSquare larger />
               <WhiteSquare />
               <WhiteSquare larger />
             </GreyUnitOutline>
             <GreyUnitOutline>
-              <TitleText>Done</TitleText>
+              <TitleText>{listNames[2]}</TitleText>
               <WhiteSquare />
               <WhiteSquare larger />
               <WhiteSquare />
