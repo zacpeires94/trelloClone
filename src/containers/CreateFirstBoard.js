@@ -65,7 +65,7 @@ const TrelloMockUpContainer = styled.div`
   }
 `;
 
-const TranslucentBox = styled.div`
+const TranslucentBox = styled.p`
   height: 20px;
   width: 150px;
   border-radius: 3.75px;
@@ -101,8 +101,25 @@ const TranslucentBox = styled.div`
             background: transparent;
             color: #fff;
             font-weight: bold;
-            font-size: 20px;
+            font-size: 24px;
             text-align: left;
+            @media (max-width: 1680px) {
+              font-size: 20px;
+              height: unset;
+            }
+            @media (max-width: 1024px) {
+              font-size: 16px;
+              height: unset;
+            }
+            @media (max-width: 768px) {
+              font-size: 20px;
+              height: unset;
+            }
+            @media (max-width: 579px) {
+              height: unset: 
+              font-size: 10px;
+              
+            }
           `;
     }
   }}
@@ -307,14 +324,13 @@ const FirstColumnBodyText = styled.p`
   margin-top: 0;
   margin-bottom: 24px;
   letter-spacing: -0.45px;
-  ${props => {
+  ${(props) => {
     if (props.noMargin) {
-      return`
+      return `
         margin-bottom: 0;
-      `
+      `;
     }
-  }
-  }}
+  }}}
 `;
 
 const BoardNamingInput = styled.input`
@@ -337,6 +353,9 @@ const BoardNamingInput = styled.input`
   font-weight: 700;
   :focus {
     outline: none;
+  }
+  ::placeholder {
+    color: #b4bac5;
   }
 `;
 
@@ -446,7 +465,10 @@ const AddLists = ({ setWidgetCurrentlyShown, listNames, setListNames }) => {
           }
           maxLength="16"
         />
-        <SubmitBoardNameButton boardName onClick={() => setWidgetCurrentlyShown("name cards")}>
+        <SubmitBoardNameButton
+          boardName
+          onClick={() => setWidgetCurrentlyShown("name cards")}
+        >
           <Chevron />
         </SubmitBoardNameButton>
       </FirstColumnTextContainer>
@@ -455,25 +477,27 @@ const AddLists = ({ setWidgetCurrentlyShown, listNames, setListNames }) => {
 };
 
 const CreateCards = ({ cardNames, setCardNames, listNames }) => {
-  console.log(cardNames)
+  console.log(cardNames);
   return (
     <FirstColumnContainer>
       <FirstColumnTextContainer>
-<FirstColumnTitle firstColumn>
-  Take a load off with cards
-</FirstColumnTitle>
-<FirstColumnBodyText>
-Make cards for things you need to do, organize, or just get out of your head.
-</FirstColumnBodyText>
-<FirstColumnBodyText noMargin>
-Add titles for a few cards in your <b>{listNames[0]}</b> list:
-</FirstColumnBodyText>
+        <FirstColumnTitle firstColumn>
+          Take a load off with cards
+        </FirstColumnTitle>
+        <FirstColumnBodyText>
+          Make cards for things you need to do, organize, or just get out of
+          your head.
+        </FirstColumnBodyText>
+        <FirstColumnBodyText noMargin>
+          Add titles for a few cards in your <b>{listNames[0]}</b> list:
+        </FirstColumnBodyText>
 
-<BoardNamingInput
+        <BoardNamingInput
           value={cardNames[0]}
           onChange={(event) =>
             setCardNames([event.target.value, cardNames[1], cardNames[2]])
           }
+          placeholder="e.g. Book flights"
           maxLength="32"
         />
         <BoardNamingInput
@@ -481,26 +505,25 @@ Add titles for a few cards in your <b>{listNames[0]}</b> list:
           onChange={(event) =>
             setCardNames([cardNames[0], event.target.value, cardNames[2]])
           }
+          placeholder="e.g. Find a hotel"
           maxLength="32"
         />
-          <BoardNamingInput
+        <BoardNamingInput
           value={cardNames[2]}
           onChange={(event) =>
             setCardNames([cardNames[0], cardNames[1], event.target.value])
           }
+          placeholder="e.g. Call dogsitter"
           maxLength="32"
         />
 
-<SubmitBoardNameButton boardName >
-  <Chevron />
-</SubmitBoardNameButton>
-</FirstColumnTextContainer>
-   
-  </FirstColumnContainer>
-  )
-}
-
-
+        <SubmitBoardNameButton boardName>
+          <Chevron />
+        </SubmitBoardNameButton>
+      </FirstColumnTextContainer>
+    </FirstColumnContainer>
+  );
+};
 
 const FirstColumn = ({
   widgetCurrentlyShown,
@@ -510,7 +533,7 @@ const FirstColumn = ({
   boardName,
   setBoardName,
   cardNames,
-  setCardNames
+  setCardNames,
 }) => {
   if (widgetCurrentlyShown === "name board") {
     return (
@@ -530,15 +553,14 @@ const FirstColumn = ({
     );
   } else if (widgetCurrentlyShown === "name cards") {
     return (
-      <CreateCards 
-      setWidgetCurrentlyShown={setWidgetCurrentlyShown}
-      cardNames={cardNames}
-      setCardNames={setCardNames}
-      listNames={listNames}
-    />
-    )
-  } 
-
+      <CreateCards
+        setWidgetCurrentlyShown={setWidgetCurrentlyShown}
+        cardNames={cardNames}
+        setCardNames={setCardNames}
+        listNames={listNames}
+      />
+    );
+  }
 };
 
 export default ({ user }) => {
@@ -560,8 +582,6 @@ export default ({ user }) => {
 
   return (
     <CreateFirstBoardContainer>
-      {/* <NameBoard setWidgetCurrentlyShown={setWidgetCurrentlyShown} boardName={boardName} setBoardName={setBoardName}/>
-      <AddLists setWidgetCurrentlyShown={setWidgetCurrentlyShown} listNames={listNames} setListNames={setListNames}/> */}
       <FirstColumn
         widgetCurrentlyShown={widgetCurrentlyShown}
         setWidgetCurrentlyShown={setWidgetCurrentlyShown}
@@ -579,19 +599,13 @@ export default ({ user }) => {
             <GreyUnitOutline first>
               <TitleText>{listNames[0]}</TitleText>
               <WhiteSquare>
-                <p>
-              {cardNames[0]}
-              </p>
+                <p>{cardNames[0]}</p>
               </WhiteSquare>
               <WhiteSquare>
-                <p>
-              {cardNames[1]}
-              </p>
-              </ WhiteSquare>
+                <p>{cardNames[1]}</p>
+              </WhiteSquare>
               <WhiteSquare>
-                <p>
-              {cardNames[2]}
-              </p>
+                <p>{cardNames[2]}</p>
               </WhiteSquare>
             </GreyUnitOutline>
             <GreyUnitOutline>
