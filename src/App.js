@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Redirect } from "react";
 import logo from "./logo.svg";
 import { Switch, Route } from "react-router-dom";
-import { HomePage, SignupPage, CreateFirstBoard } from "./containers";
+import { SingleBoard, SignupPage, CreateFirstBoard } from "./containers";
 import firebase from "firebase";
 import "./App.css";
 
@@ -15,24 +15,24 @@ const App = () => {
       if (user) {
         setUid(user.uid);
         setEmail(user.email);
-        // use uid to getUser and to check for admin
       }
       setHasCheckedForUser(true);
     });
 
-    // console.log(uid)
+    console.log(uid)
   });
 
   if (!hasCheckedForUser) {
-    {
-    }
     return <div />;
   }
 
   return (
     <div className="App">
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/" component={SingleBoard} />
+        {/* if there is a user, see which board was last user (should be saved against their name) and
+         redirect to the user's last user board */}
+        <Route exact path="/boards/:boardName" render={(props) => <SingleBoard user={uid} />} />
         <Route
           exact
           path="/sign-up"
@@ -43,6 +43,7 @@ const App = () => {
           path="/create-first-board"
           render={(props) => <CreateFirstBoard user={uid} />}
         />
+        {/* introduce a redirect, so user couldn't go to this page if they have a board */}
       </Switch>
     </div>
   );

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
 import { firestore } from "../utils/firebase";
 import { FirstColumn, SecondColumn } from "../components/FirstBoardCreation";
 
@@ -74,6 +73,7 @@ export default ({ user }) => {
         .set({
           name: boardName,
           dateCreated: new Date().toISOString().slice(0, 10),
+          owner: user
         });
       await firestore
         .collection("users")
