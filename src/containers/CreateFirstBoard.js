@@ -9,6 +9,8 @@ const CreateFirstBoardContainer = styled.div`
   display: flex;
   @media (max-width: 768px) {
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -306,6 +308,7 @@ const FirstColumnContainer = styled.div`
   justify-content: center;
   @media (max-width: 768px) {
     order: 2;
+    height: 100%;
   }
 `;
 
@@ -396,6 +399,16 @@ const SubmitBoardNameButton = styled.button`
           `;
     }
   }}
+  ${(props) => {
+    if (props.getStarted) {
+      return `
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      `;
+    }
+  }}
 `;
 
 const NameBoard = ({ setWidgetCurrentlyShown, boardName, setBoardName }) => {
@@ -476,7 +489,12 @@ const AddLists = ({ setWidgetCurrentlyShown, listNames, setListNames }) => {
   );
 };
 
-const CreateCards = ({ cardNames, setCardNames, listNames }) => {
+const CreateCards = ({
+  cardNames,
+  setCardNames,
+  listNames,
+  setWidgetCurrentlyShown,
+}) => {
   console.log(cardNames);
   return (
     <FirstColumnContainer>
@@ -517,8 +535,34 @@ const CreateCards = ({ cardNames, setCardNames, listNames }) => {
           maxLength="32"
         />
 
-        <SubmitBoardNameButton boardName>
+        <SubmitBoardNameButton
+          boardName
+          onClick={() => setWidgetCurrentlyShown("make board")}
+        >
           <Chevron />
+        </SubmitBoardNameButton>
+      </FirstColumnTextContainer>
+    </FirstColumnContainer>
+  );
+};
+
+const GetStarted = ({ addFirstBoardToUser }) => {
+  return (
+    <FirstColumnContainer>
+      <FirstColumnTextContainer>
+        <FirstColumnTitle firstColumn>
+          You're ready to get started!
+        </FirstColumnTitle>
+        <FirstColumnBodyText>
+          Now that you understand the basics of boards, lists and cards, you can
+          use Trello to fit your needs, whatever they are!
+        </FirstColumnBodyText>
+        <SubmitBoardNameButton
+          boardName
+          getStarted
+          onClick={addFirstBoardToUser}
+        >
+          Now you're a pro! Keep building your board
         </SubmitBoardNameButton>
       </FirstColumnTextContainer>
     </FirstColumnContainer>
@@ -534,6 +578,7 @@ const FirstColumn = ({
   setBoardName,
   cardNames,
   setCardNames,
+  addFirstBoardToUser,
 }) => {
   if (widgetCurrentlyShown === "name board") {
     return (
@@ -558,8 +603,11 @@ const FirstColumn = ({
         cardNames={cardNames}
         setCardNames={setCardNames}
         listNames={listNames}
+        setWidgetCurrentlyShown={setWidgetCurrentlyShown}
       />
     );
+  } else if (widgetCurrentlyShown === "make board") {
+    return <GetStarted addFirstBoardToUser={addFirstBoardToUser} />;
   }
 };
 
@@ -571,13 +619,73 @@ export default ({ user }) => {
     "name board"
   );
 
+  let hasBoardBeenCreated = false;
+
+  const createLists = async (index) => {
+    if (index === 0) {
+      await firestore
+        .collection("boards")
+        .doc(boardName)
+        .collection("lists")
+        .doc(listNames[0])
+        .set({
+          name: listNames[0],
+          owner: user,
+          position: index,
+          cards: [
+            {
+              name: cardNames[0],
+              description: "",
+            },
+            {
+              name: cardNames[1],
+              description: "",
+            },
+            {
+              name: cardNames[2],
+              description: "",
+            },
+          ],
+        });
+    } else {
+      await firestore
+        .collection("boards")
+        .doc(boardName)
+        .collection("lists")
+        .doc(listNames[index])
+        .set({
+          name: listNames[index],
+          owner: user,
+          position: index,
+          cards: [],
+        });
+    }
+  };
+
   const addFirstBoardToUser = async () => {
-    // should actually be add first boards and lists and will add the lists to the board as well
-    console.log("clicked");
-    await firestore.collection("users").doc(user).collection("boards").add({
-      name: boardName,
+    if (!hasBoardBeenCreated) {
+      await firestore.collection("boards").doc(boardName).set({
+        name: boardName,
+      });
+      await firestore
+        .collection("users")
+        .doc(user)
+        .set(
+          {
+            projects: {
+              name: boardName,
+              uid: "",
+            },
+          },
+          {
+            merge: true,
+          }
+        );
+    }
+
+    await listNames.map(async (name, index) => {
+      return await createLists(index);
     });
-    setWidgetCurrentlyShown("listNames");
   };
 
   return (
@@ -591,6 +699,7 @@ export default ({ user }) => {
         setListNames={setListNames}
         cardNames={cardNames}
         setCardNames={setCardNames}
+        addFirstBoardToUser={addFirstBoardToUser}
       />
       <SecondColumn listNames>
         <TrelloMockUpContainer>
