@@ -89,7 +89,6 @@ const WhiteListCard = styled.textarea`
 
 export const DropDown = ({cards, listName}) => {
   const [taskList, setTaskList] = useState(cards);
-  console.log(taskList)
   const [newCardTitle, setNewCardTitle] = useState("");
   const newTextBoxRef = useRef(null);
 
@@ -115,7 +114,22 @@ export const DropDown = ({cards, listName}) => {
   };
 
 
-  console.log(taskList.length)
+  const Footer = ({ taskList, createNewCard, addCard }) => {
+    return (
+      <>
+          {taskList.length && taskList[taskList.length - 1].name.length < 1 ? (
+        <DropDownHeaderAndFooter paddingBottom>
+          <AddCardButton onClick={addCard}>Add Card</AddCardButton>
+        </DropDownHeaderAndFooter>
+      ) : (
+        <DropDownHeaderAndFooter onClick={createNewCard} footer noCardsInList={taskList.length === 0 ? true : false}>
+          <PlusSign />
+          <ColumnTitle grey>Add another card</ColumnTitle>
+        </DropDownHeaderAndFooter>
+      )}
+      </>
+    )
+  }
   
 
   return (
@@ -126,7 +140,7 @@ export const DropDown = ({cards, listName}) => {
       <WhiteListContainer>
         {taskList.map((task, index) => {
           return task.name ? (
-            <WhiteListCard index={index}>{task.name}</WhiteListCard>
+            <WhiteListCard key={index} index={index}>{task.name}</WhiteListCard>
           ) : (
             <WhiteListCard
               newCard
@@ -140,16 +154,7 @@ export const DropDown = ({cards, listName}) => {
           );
         })}
       </WhiteListContainer>
-      {taskList.length && taskList[taskList.length - 1].name.length < 1 ? (
-        <DropDownHeaderAndFooter paddingBottom>
-          <AddCardButton onClick={addCard}>Add Card</AddCardButton>
-        </DropDownHeaderAndFooter>
-      ) : (
-        <DropDownHeaderAndFooter onClick={createNewCard} footer noCardsInList={taskList.length === 0 ? true : false}>
-          <PlusSign />
-          <ColumnTitle grey>Add another card</ColumnTitle>
-        </DropDownHeaderAndFooter>
-      )}
+      <Footer taskList={taskList} createNewCard={createNewCard} addCard={addCard}/>
     </DropDownContainer>
   );
 };

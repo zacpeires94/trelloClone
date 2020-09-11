@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { firestore } from "../utils/firebase";
 import { FirstColumn, SecondColumn } from "../components/FirstBoardCreation";
+import history from "../history";
 
 const CreateFirstBoardContainer = styled.div`
   height: 100vh;
@@ -39,14 +40,17 @@ export default ({ user }) => {
             {
               name: cardNames[0],
               description: "",
+              position: 0
             },
             {
               name: cardNames[1],
               description: "",
+              position: 1
             },
             {
               name: cardNames[2],
               description: "",
+              position: 2
             },
           ],
         });
@@ -92,8 +96,10 @@ export default ({ user }) => {
     }
 
     listNames.map(async (name, index) => {
-      return await createLists(index);
+      await createLists(index);
     });
+
+    history.push(`boards/${boardName}`)
   };
 
   return (
