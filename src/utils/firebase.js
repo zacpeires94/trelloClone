@@ -11,5 +11,4 @@ firebase.initializeApp({
   appId: "1:515830582899:web:a21be54b7d381b3127e406",
 });
 
-
 export const firestore = firebase.firestore();

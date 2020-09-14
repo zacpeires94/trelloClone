@@ -44,6 +44,7 @@ export default ({ user }) => {
       setUserLists(boardLists)
     };
 
+
     getBoardData();
   }, []);
 

@@ -26,34 +26,35 @@ export default ({ user }) => {
   let hasBoardBeenCreated = false;
 
   const createLists = async (index, boardId) => {
-    if (index === 0) {
+    // dynamically check card names and render appropriately - "" is not a name and shouldn't be treated as such
+    if (index === 0 && cardNames.length) {
       await firestore
-        .collection("boards")
-        .doc(boardId)
-        .collection("lists")
-        .doc(listNames[0])
-        .set({
-          name: listNames[0],
-          owner: user,
-          position: index,
-          cards: [
-            {
-              name: cardNames[0],
-              description: "",
-              position: 0
-            },
-            {
-              name: cardNames[1],
-              description: "",
-              position: 1
-            },
-            {
-              name: cardNames[2],
-              description: "",
-              position: 2
-            },
-          ],
-        });
+      .collection("boards")
+      .doc(boardId)
+      .collection("lists")
+      .doc(listNames[0])
+      .set({
+        name: listNames[0],
+        owner: user,
+        position: index,
+        cards: [
+          {
+            name: cardNames[0],
+            description: "",
+            position: 0
+          },
+          {
+            name: cardNames[1],
+            description: "",
+            position: 1
+          },
+          {
+            name: cardNames[2],
+            description: "",
+            position: 2
+          },
+        ],
+      });
     } else {
       await firestore
         .collection("boards")
