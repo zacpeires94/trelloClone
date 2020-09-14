@@ -26,38 +26,23 @@ export default ({ user }) => {
   // when user loads board, it should update the document with the name of the board
   // in the field lastUsed
 
-  console.log(history.location.pathname.split("/")[2]);
-
   useEffect(() => {
     const getBoardData = async () => {
-      const pathName = history.location.pathname.split("/")[2];
-      await firestore
-        .collection("boards")
-        .where("owner", "==", user)
-        .get()
-        .then(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-            // setState
-          });
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
-        });
-    };
+      let boardLists = []
 
-    // stubbed data
-    setUserLists([
-      {
-        name: "To do",
-        cards: [
-          { name: "Build this project" },
-          { name: "Build this project" },
-          { name: "Build this project" },
-        ],
-      },
-    ]);
+      const boardId = history.location.pathname.split("/")[2];
+      console.log(boardId)
+
+      await firestore.collection('boards/' + boardId + '/lists').get().then((subCollectionSnapshot) => {
+        subCollectionSnapshot.forEach((subDoc) => {
+            console.log(subDoc.data());
+            boardLists[subDoc.data().position] = subDoc.data()
+        });
+    });
+
+    console.log(boardLists)
+      setUserLists(boardLists)
+    };
 
     getBoardData();
   }, []);
@@ -72,7 +57,7 @@ export default ({ user }) => {
       <NavbarSecondary />
       <DropDownContainer>
         {userLists.map((list, index) => {
-          console.log(list);
+      
           return <DropDown cards={list.cards} listName={list.name} />;
         })}
         <AddListButton

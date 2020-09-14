@@ -25,11 +25,11 @@ export default ({ user }) => {
 
   let hasBoardBeenCreated = false;
 
-  const createLists = async (index) => {
+  const createLists = async (index, boardId) => {
     if (index === 0) {
       await firestore
         .collection("boards")
-        .doc(boardName)
+        .doc(boardId)
         .collection("lists")
         .doc(listNames[0])
         .set({
@@ -57,7 +57,7 @@ export default ({ user }) => {
     } else {
       await firestore
         .collection("boards")
-        .doc(boardName)
+        .doc(boardId)
         .collection("lists")
         .doc(listNames[index])
         .set({
@@ -70,15 +70,18 @@ export default ({ user }) => {
   };
 
   const addFirstBoardToUser = async () => {
+    let boardId;
+
     if (!hasBoardBeenCreated) {
-      await firestore
+    const newlyCreatedBoard = await firestore
         .collection("boards")
-        .doc(boardName)
-        .set({
+        // .doc(boardName)
+        .add({
           name: boardName,
           dateCreated: new Date().toISOString().slice(0, 10),
           owner: user
         });
+      boardId = newlyCreatedBoard.id;
       await firestore
         .collection("users")
         .doc(user)
@@ -87,6 +90,7 @@ export default ({ user }) => {
             projects: {
               name: boardName,
               dateCreated: new Date().toISOString().slice(0, 10),
+              uid: boardId
             },
           },
           {
@@ -96,10 +100,10 @@ export default ({ user }) => {
     }
 
     listNames.map(async (name, index) => {
-      await createLists(index);
+      await createLists(index, boardId);
     });
 
-    history.push(`boards/${boardName}`)
+    history.push(`boards/${boardId}`)
   };
 
   return (
