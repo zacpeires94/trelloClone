@@ -52,7 +52,7 @@ const WhiteListContainer = styled.div`
   margin: 0;
 `;
 
-const WhiteListCard = styled.textarea`
+const WhiteListCard = styled.div`
   box-sizing: border-box;
   padding: 8px;
   background: white;
@@ -73,17 +73,37 @@ const WhiteListCard = styled.textarea`
     outline: none;
   }
   ${(props) => {
-    if (props.newCard) {
-      return `
-                height: 54px;
-                color: #717382;
-            `;
-    } else if (props.index === 0) {
+    if (props.index === 0) {
         return`
             margin-top: 0;
         `
     }
   }}
+`;
+
+const WhiteListCardTextArea = styled.textarea`
+  box-sizing: border-box;
+  padding: 8px;
+  background: white;
+  overflow: hidden;
+  resize: vertical;
+  overflow-wrap: break-word;
+  resize: none;
+  width: 100%;
+  border: none;
+  font-style: unset;
+  margin: 8px 0 0 0;
+  border-radius: 3px;
+  text-align: left;
+  font-size: 14px;
+  box-shadow: 0 1px 0 rgba(9,30,66,.25);
+  cursor: pointer;
+  :focus {
+    outline: none;
+  }
+                min-height: 66px;
+                color: #717382;
+            
 `;
 
 
@@ -142,15 +162,14 @@ export const DropDown = ({cards, listName}) => {
           return task.name ? (
             <WhiteListCard key={index} index={index} disabled>{task.name}</WhiteListCard>
           ) : (
-            <WhiteListCard
-              newCard
+            <WhiteListCardTextArea
               placeholder="Enter a title for this card..."
               ref={newTextBoxRef}
               value={newCardTitle}
               onChange={(event) => enterTitle(event)}
             >
               {newCardTitle}
-            </WhiteListCard>
+            </WhiteListCardTextArea>
           );
         })}
       </WhiteListContainer>

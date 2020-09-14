@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { HouseIcon, BoardIcon } from '../Icon';
 
 const NavbarContainer = styled.nav`
   background-color: rgba(0, 0, 0, 0.32);
@@ -56,6 +57,12 @@ const NavbarButton = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
+  svg {
+    height: 20px;
+    width: 20px;
+    fill: white;
+  }
   p {
     font-size: 14px;
     margin: 0;
@@ -65,6 +72,11 @@ const NavbarButton = styled.div`
     if (props.showBoards) {
       return `
                 width: 90px;
+                font-weight: bold;
+                p {
+                  margin-left: 6px;
+                  line-height: 14px;
+                }
             `;
     } else if (props.searchBar) {
       return `
@@ -123,19 +135,26 @@ const Divider = styled.span`
   margin: 8px 8px 12px 4px;
 `;
 
-export const NavbarPrimary = ({ userData, getUserInitials }) => {
+export const NavbarPrimary = ({ userData, getUserInitials, setShowAccountMenu }) => {
   return (
     <NavbarContainer>
       <span>
-        <NavbarButton />
-        <NavbarButton />
-        <NavbarButton showBoards />
+        <NavbarButton>
+          <HouseIcon />
+        </NavbarButton>
+        <NavbarButton showBoards>
+          <BoardIcon />
+          <p>
+          Boards
+          </p>
+     
+        </NavbarButton>
         <NavbarButton searchBar />
       </span>
       <span>
         <NavbarButton />
         <NavbarButton />
-        <NavbarButton round>{getUserInitials()}</NavbarButton>
+        <NavbarButton onClick={() => setShowAccountMenu(true)} round>{getUserInitials()}</NavbarButton>
       </span>
     </NavbarContainer>
   );

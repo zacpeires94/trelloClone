@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { NavbarPrimary, NavbarSecondary } from "../components/Navbar";
 import { firestore } from "../utils/firebase";
 import { DropDown } from "../components/DropDown";
+import { AccountMenuPopUp } from '../components/Menu';
 import history from "../history";
 import { AddListButton, EnterListTitle } from "../components/Button";
 
@@ -28,6 +29,7 @@ export default ({ user  }) => {
   const [newListName, setNewListName] = useState("");
   const [boardData, setBoardData] = useState(null);
   const [userData, setUserData] = useState(null)
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [
     showDropDownForNamingNewList,
     setShowDropDownForNamingNewList,
@@ -93,7 +95,8 @@ export default ({ user  }) => {
 
   return (
     <HomePageContainer>
-      <NavbarPrimary userData={userData} getUserInitials={getUserInitials}/>
+      <AccountMenuPopUp getUserInitials={getUserInitials} userData={userData} showAccountMenu={showAccountMenu} setShowAccountMenu={setShowAccountMenu}/>
+      <NavbarPrimary userData={userData} getUserInitials={getUserInitials} setShowAccountMenu={setShowAccountMenu}/>
       <NavbarSecondary boardData={boardData} userData={userData} getUserInitials={getUserInitials}/>
       <InternalHomePageContainer>
       <DropDownContainer>

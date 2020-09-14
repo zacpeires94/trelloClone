@@ -20,3 +20,19 @@ export const ColumnTitle = styled.p`
     }
   }}
 `;
+
+export const MidSizeText = styled.p`
+color: rgb(23, 43, 77);
+font-size: 14px;
+margin: 0;
+line-height: 20px;
+width: max-content;
+`
+
+export const SmallGreyText = styled.p`
+  font-size: 12px;
+  color:rgb(179, 186, 197);
+  margin: 0;
+  width: max-content;
+  line-height:20px;
+`
