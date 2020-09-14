@@ -9,12 +9,15 @@ const App = () => {
   const [hasCheckedForUser, setHasCheckedForUser] = useState(false);
   const [uid, setUid] = useState("");
   const [email, setEmail] = useState("");
+  const [projects, setUserProjects] = useState([])
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         setUid(user.uid);
         setEmail(user.email);
+        console.log(user)
+
       }
       setHasCheckedForUser(true);
     });
@@ -29,10 +32,10 @@ const App = () => {
   return (
     <div className="App">
       <Switch>
-    <Route exact path="/" render={(props) => <SingleBoard user={uid} />}/>
+    <Route exact path="/" render={(props) => <SingleBoard user={uid}/>}/>
         {/* if there is a user, see which board was last user (should be saved against their name) and
          redirect to the user's last user board */}
-        <Route exact path="/boards/:boardName" render={(props) => <SingleBoard user={uid} />} />
+        <Route exact path="/boards/:boardName" render={(props) => <SingleBoard user={uid}/>} />
         <Route
           exact
           path="/sign-up"

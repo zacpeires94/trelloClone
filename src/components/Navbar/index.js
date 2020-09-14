@@ -8,29 +8,30 @@ const NavbarContainer = styled.nav`
   overflow: hidden;
   padding: 4px;
   justify-content: space-between;
+  position: fixed;
+  width: 100vw;
   ${(props) => {
     if (props.secondaryNav) {
       return `
             padding: 8px 4px 8px 8px;
-            position: relative;
             background: rgba(0,0,0,.24);
+            top: 40px;
           `;
     }
   }}
   span {
     display: flex;
-    ${props => {
-        if (props.secondaryNav) {
-            return`
+    ${(props) => {
+      if (props.secondaryNav) {
+        return `
                 max-height: 32px;
-            `
-        }
+            `;
+      }
     }}
   }
 `;
 
-const SecondaryNavInnerContainer = styled.span`
-`
+const SecondaryNavInnerContainer = styled.span``;
 
 const BoardNameTitleBox = styled.div`
   padding-right: 4px;
@@ -83,6 +84,7 @@ const NavbarButton = styled.div`
                 justify-content: center;
                 p {
                     color: black;
+                    font-size: 14px;
                 }
             `;
     } else if (props.projectName) {
@@ -108,10 +110,6 @@ const NavbarButton = styled.div`
             :hover {
                 background-color: #c1c7d0;
             }
-            p {
-                font-size: 12px;
-
-            }
         `;
     }
   }}
@@ -125,7 +123,7 @@ const Divider = styled.span`
   margin: 8px 8px 12px 4px;
 `;
 
-export const NavbarPrimary = () => {
+export const NavbarPrimary = ({ userData, getUserInitials }) => {
   return (
     <NavbarContainer>
       <span>
@@ -137,7 +135,7 @@ export const NavbarPrimary = () => {
       <span>
         <NavbarButton />
         <NavbarButton />
-        <NavbarButton round />
+        <NavbarButton round>{getUserInitials()}</NavbarButton>
       </span>
     </NavbarContainer>
   );
@@ -148,12 +146,12 @@ const ProjectMemberContainers = styled.div`
   align-items: center;
 `;
 
-export const NavbarSecondary = () => {
+export const NavbarSecondary = ({ boardData, userData, getUserInitials }) => {
   return (
     <NavbarContainer secondaryNav>
       <SecondaryNavInnerContainer secondaryNav>
         <BoardNameTitleBox>
-          <p>Board Name</p>
+          <p>{boardData.name}</p>
         </BoardNameTitleBox>
         <NavbarButton />
         <Divider />
@@ -163,12 +161,12 @@ export const NavbarSecondary = () => {
         <Divider />
         <ProjectMemberContainers>
           <NavbarButton round projectMember>
-            <p>ZP</p>
+            <p>{getUserInitials()}</p>
           </NavbarButton>
         </ProjectMemberContainers>
-        <NavbarButton invite><p>
-        Invite
-            </p></NavbarButton>
+        <NavbarButton invite>
+          <p>Invite</p>
+        </NavbarButton>
       </SecondaryNavInnerContainer>
     </NavbarContainer>
   );

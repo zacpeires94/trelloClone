@@ -140,7 +140,7 @@ export const DropDown = ({cards, listName}) => {
       <WhiteListContainer>
         {taskList.map((task, index) => {
           return task.name ? (
-            <WhiteListCard key={index} index={index}>{task.name}</WhiteListCard>
+            <WhiteListCard key={index} index={index} disabled>{task.name}</WhiteListCard>
           ) : (
             <WhiteListCard
               newCard
