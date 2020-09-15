@@ -151,6 +151,7 @@ export const DropDown = ({cards, listName}) => {
     )
   }
   
+  console.log(taskList)
 
   return (
     <DropDownContainer>

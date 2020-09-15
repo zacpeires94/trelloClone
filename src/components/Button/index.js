@@ -34,7 +34,7 @@ export const AddCardButton = styled.button`
 `;
 
 const FullWidthContainer = styled.div`
-  width: 272px;
+  min-width: 272px;
   margin: 8px;
   padding-right: 8px;
 `
@@ -56,7 +56,8 @@ height: 40px;
 ${props => {
     if (props.showDropDownForNamingNewList) {
         return`
-            display: none;
+            height: 0;
+            overflow: hidden;
         `
     }
 }}
@@ -68,10 +69,11 @@ border-radius: 3px;
 width: 100%;
 height: 0;
 overflow: hidden;
-transition: height 85ms;
+transition: height 0;
 ${props => {
     if (props.showDropDownForNamingNewList) {
         return`
+        transition: height 85ms;
         box-sizing: border-box;
         padding: 4px;
         height: 77px;

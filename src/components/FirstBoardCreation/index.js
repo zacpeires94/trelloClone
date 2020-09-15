@@ -482,8 +482,27 @@ const CreateCards = ({
   setCardNames,
   listNames,
   setWidgetCurrentlyShown,
+  firstListCards,
+  setFirstListCards
 }) => {
-  console.log(cardNames);
+
+  const createCardEntryWithFullData = (event, index) => {
+    if (event.target.value.length) {
+      if (firstListCards.length) {
+        setFirstListCards([...firstListCards, {
+          name: event.target.value,
+          position: index
+        }])
+      } else {
+        setFirstListCards([{
+          name: event.target.value,
+          position: index
+        }])
+      }
+
+    }
+  }
+
   return (
     <FirstColumnContainer>
       <FirstColumnTextContainer>
@@ -500,25 +519,28 @@ const CreateCards = ({
 
         <BoardNamingInput
           value={cardNames[0]}
-          onChange={(event) =>
-            setCardNames([event.target.value, cardNames[1], cardNames[2]])
-          }
+          onChange={(event) => {
+            setCardNames([event.target.value, cardNames[1], cardNames[2]]);
+            createCardEntryWithFullData(event, 0) 
+          }}
           placeholder="e.g. Book flights"
           maxLength="32"
         />
         <BoardNamingInput
           value={cardNames[1]}
-          onChange={(event) =>
-            setCardNames([cardNames[0], event.target.value, cardNames[2]])
-          }
+          onChange={(event) => {
+            setCardNames([cardNames[0], event.target.value, cardNames[2]]);
+            createCardEntryWithFullData(event, 1) 
+          }}
           placeholder="e.g. Find a hotel"
           maxLength="32"
         />
         <BoardNamingInput
           value={cardNames[2]}
-          onChange={(event) =>
-            setCardNames([cardNames[0], cardNames[1], event.target.value])
-          }
+          onChange={(event) => {
+            setCardNames([cardNames[0], cardNames[1], event.target.value]);
+            createCardEntryWithFullData(event, 2) 
+          }}
           placeholder="e.g. Call dogsitter"
           maxLength="32"
         />
@@ -567,6 +589,8 @@ export const FirstColumn = ({
   cardNames,
   setCardNames,
   addFirstBoardToUser,
+  firstListCards,
+  setFirstListCards
 }) => {
   if (widgetCurrentlyShown === "name board") {
     return (
@@ -592,6 +616,8 @@ export const FirstColumn = ({
         setCardNames={setCardNames}
         listNames={listNames}
         setWidgetCurrentlyShown={setWidgetCurrentlyShown}
+        firstListCards={firstListCards}
+        setFirstListCards={setFirstListCards}
       />
     );
   } else if (widgetCurrentlyShown === "make board") {

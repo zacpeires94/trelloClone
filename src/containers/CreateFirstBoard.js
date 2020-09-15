@@ -19,6 +19,7 @@ export default ({ user }) => {
   const [boardName, setBoardName] = useState("");
   const [listNames, setListNames] = useState(["Things To Do", "Doing", "Done"]);
   const [cardNames, setCardNames] = useState(["", "", ""]);
+  const [firstListCards, setFirstListCards] = useState([])
   const [widgetCurrentlyShown, setWidgetCurrentlyShown] = useState(
     "name board"
   );
@@ -37,24 +38,9 @@ export default ({ user }) => {
         name: listNames[0],
         owner: user,
         position: index,
-        cards: [
-          {
-            name: cardNames[0],
-            description: "",
-            position: 0
-          },
-          {
-            name: cardNames[1],
-            description: "",
-            position: 1
-          },
-          {
-            name: cardNames[2],
-            description: "",
-            position: 2
-          },
-        ],
+        cards: firstListCards
       });
+      
     } else {
       await firestore
         .collection("boards")
@@ -119,6 +105,8 @@ export default ({ user }) => {
         cardNames={cardNames}
         setCardNames={setCardNames}
         addFirstBoardToUser={addFirstBoardToUser}
+        firstListCards={firstListCards}
+        setFirstListCards={setFirstListCards}
       />
       <SecondColumn
         boardName={boardName}
