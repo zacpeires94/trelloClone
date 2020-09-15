@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Redirect } from "react";
 import logo from "./logo.svg";
 import { Switch, Route } from "react-router-dom";
-import { SingleBoard, SignupPage, CreateFirstBoard } from "./containers";
+import { SingleBoard, SignupPage, CreateFirstBoard, HomePage } from "./containers";
 import firebase from "firebase";
 import "./App.css";
 
@@ -32,14 +32,19 @@ const App = () => {
   return (
     <div className="App">
       <Switch>
-    <Route exact path="/" render={(props) => <SingleBoard user={uid}/>}/>
-        {/* if there is a user, see which board was last user (should be saved against their name) and
-         redirect to the user's last user board */}
+    <Route exact path="/" render={(props) => 
+      uid ? (
+        <HomePage user={uid} />
+      ) : (
+        <SignupPage />
+      )}
+    />
+
         <Route exact path="/boards/:boardName" render={(props) => <SingleBoard user={uid}/>} />
         <Route
           exact
           path="/sign-up"
-          render={(props) => <SignupPage user={uid} />}xx
+          render={(props) => <SignupPage  />}
         />
         <Route
           exact

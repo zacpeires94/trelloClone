@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { createUser } from "../api/user";
-import { SignupPageForm } from "../components/Form";
+import { SignupPageForm } from '../components/Form';
 import firebase from "firebase";
 import history from "../history";
 
@@ -13,23 +13,24 @@ const SignupPageContainer = styled.div`
   justify-content: center;
 `;
 
-export default ({ user }) => {
+export default () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const createNewUser = (event) => {
+  const createNewUser = async (event) => {
     event.preventDefault();
-    createUser(email, password, fullName);
+    await createUser(email, password, fullName);
+        //check to see if email exists already in db - firebase admin sdk
     firebase.auth().onAuthStateChanged((user) => {
-      if (user.email === email) {
-        history.push("/");
+      console.log(user, user.email)
+      if (user && user.email === email) {
+        history.push('/create-first-board')
       }
     });
-    setFullName("");
-    setEmail("");
-    setPassword("");
   };
+
+
 
   return (
     <SignupPageContainer>
