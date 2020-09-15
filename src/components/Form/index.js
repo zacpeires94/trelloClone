@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import styled from "styled-components";
 
 const SignupFormContainer = styled.div`
@@ -12,6 +13,7 @@ const SignupFormContainer = styled.div`
   a {
     color: rgb(0, 82, 204);
     font-size: 14px;
+    text-decoration: none;
     cursor: pointer;
     :hover {
       text-decoration: underline;
@@ -87,8 +89,23 @@ export const SignupPageForm = ({fullName, setFullName, email, setEmail, password
         <SingnupLoginButton type="submit">Sign up</SingnupLoginButton>
       </form>
       <GreyLine />
-      <a>Already have an account? Log in</a>
+      <Link to="/login">Already have an account? Log in</Link>
     </SignupFormContainer>
   );
 };
 
+
+export const LoginPageForm = ({ email, setEmail, password, setPassword, loginExistingUser }) => {
+  return (
+  <SignupFormContainer>
+    <SignupLoginFormText>Log in to Trello-Clone</SignupLoginFormText>
+    <form onSubmit={(event) => loginExistingUser(event)}>
+      <SignupLoginFormInput placeholder="Enter email" value={email} onChange={event => setEmail(event.target.value) }/>
+      <SignupLoginFormInput placeholder="Create password" type="password" value={password} onChange={event => setPassword(event.target.value)}/>
+      <SingnupLoginButton type="submit">Log in</SingnupLoginButton>
+    </form>
+    <GreyLine/>
+    <Link  to="/sign-up">Can't log in? Sign up for an account</Link>
+  </SignupFormContainer>
+);
+};

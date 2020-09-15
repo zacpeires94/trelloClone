@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Redirect } from "react";
 import logo from "./logo.svg";
 import { Switch, Route } from "react-router-dom";
-import { SingleBoard, SignupPage, CreateFirstBoard, HomePage } from "./containers";
+import { SingleBoard, SignupPage, CreateFirstBoard, HomePage, LoginPage } from "./containers";
 import firebase from "firebase";
 import "./App.css";
 
@@ -45,6 +45,11 @@ const App = () => {
           exact
           path="/sign-up"
           render={(props) => <SignupPage  />}
+        />
+            <Route
+          exact
+          path="/login"
+          component={LoginPage}
         />
         <Route
           exact

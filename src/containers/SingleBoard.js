@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import firebase from 'firebase'
 import styled from "styled-components";
 import { NavbarPrimary, NavbarSecondary } from "../components/Navbar";
 import { firestore } from "../utils/firebase";
@@ -81,11 +82,21 @@ export default ({ user  }) => {
     let userInitials;
     let separatedUserName = userData.fullName.split(" ")
     if (separatedUserName.length === 2) {
-      userInitials = `${separatedUserName[0][1].toUpperCase()} ${separatedUserName[1][0].toUpperCase()}`
+      userInitials = `${separatedUserName[0][0].toUpperCase()}${separatedUserName[1][0].toUpperCase()}`
     } else {
       userInitials = `${separatedUserName[0][0].toUpperCase()}`
     }
     return userInitials
+  }
+
+
+  const LogOut = async () => {
+   await firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+    }, function(error) {
+      // An error happened.
+    });
+    
   }
 
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { createUser } from "../api/user";
+import { FullPageCentredContainer } from '../components/Container'
 import { SignupPageForm } from '../components/Form';
 import firebase from "firebase";
 import history from "../history";
@@ -21,7 +22,7 @@ export default () => {
   const createNewUser = async (event) => {
     event.preventDefault();
     await createUser(email, password, fullName);
-        //check to see if email exists already in db - firebase admin sdk
+      //check to see if email exists already in db - firebase admin sdk
     firebase.auth().onAuthStateChanged((user) => {
       console.log(user, user.email)
       if (user && user.email === email) {
@@ -33,7 +34,7 @@ export default () => {
 
 
   return (
-    <SignupPageContainer>
+    <FullPageCentredContainer>
       <SignupPageForm
         fullName={fullName}
         setFullName={setFullName}
@@ -43,6 +44,6 @@ export default () => {
         setPassword={setPassword}
         createNewUser={createNewUser}
       />
-    </SignupPageContainer>
+    </FullPageCentredContainer>
   );
 };
