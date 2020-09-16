@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ColumnTitle } from '../Typography';
 import { AddCardButton } from '../Button';
-import { PlusSign } from '../Icon';
+import { PlusSign, CloseCardEntry } from '../Icon';
 import styled from "styled-components";
 
 const DropDownContainer = styled.div`
@@ -27,7 +27,14 @@ const DropDownHeaderAndFooter = styled.div`
   ${(props) => {
      if (props.paddingBottom) {
       return `
-                padding-bottom: 8px
+                padding-bottom: 8px;
+                svg {
+                  height: 17px;
+                  width: 17px;
+                  margin-top: 8px;
+                  margin-left: 8px;
+                  fill:  #6b778c;
+                }
             `;
     }
   }}
@@ -134,24 +141,29 @@ export const DropDown = ({cards, listName}) => {
   };
 
 
+  const closeAddCardEntry = () => {
+  setTaskList(taskList.slice(0, taskList.length - 1))
+  }
+
+
   const Footer = ({ taskList, createNewCard, addCard }) => {
     return (
       <>
           {taskList.length && taskList[taskList.length - 1].name.length < 1 ? (
         <DropDownHeaderAndFooter paddingBottom>
           <AddCardButton onClick={addCard}>Add Card</AddCardButton>
+          <CloseCardEntry closeAddCardEntry={closeAddCardEntry} />
         </DropDownHeaderAndFooter>
       ) : (
         <DropDownHeaderAndFooter onClick={createNewCard} footer noCardsInList={taskList.length === 0 ? true : false}>
           <PlusSign />
-          <ColumnTitle grey>Add another card</ColumnTitle>
+          <ColumnTitle grey>Add a card</ColumnTitle>
         </DropDownHeaderAndFooter>
       )}
       </>
     )
   }
   
-  console.log(taskList)
 
   return (
     <DropDownContainer>
