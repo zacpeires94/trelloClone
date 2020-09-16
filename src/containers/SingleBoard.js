@@ -65,16 +65,6 @@ export default ({ user, userData  }) => {
   }
 
 
-
-  const LogOut = async () => {
-   await firebase.auth().signOut().then(function() {
-      // Sign-out successful.
-    }, function(error) {
-      // An error happened.
-    }); 
-  }
-
-
   const getUserInitials = () => {
     let userInitials;
     let separatedUserName = userData.fullName.split(" ")

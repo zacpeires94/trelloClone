@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { NavbarPrimary } from "../components/Navbar";
-import { HomePageContainer } from '../components/Container'
+import { HomePageContainer } from '../components/Container';
 
-export default ({ userData }) => {
+const HorizontallyCentredContainer = styled.div`
+    display: flex;
+    justify-content: center;
+`
+
+export default ({ userData, setShowNavbar }) => {
     const [showAccountMenu, setShowAccountMenu] = useState(false);
+    useEffect(() => {
+        setShowNavbar(true);
+    })
 
     const getUserInitials = () => {
         let userInitials;
@@ -19,8 +27,10 @@ export default ({ userData }) => {
     
 
     return (
-        <HomePageContainer>
-            <NavbarPrimary  userData={userData} showAccountMenu={showAccountMenu} getUserInitials={getUserInitials}/>
+        <HomePageContainer homePage>
+            <HorizontallyCentredContainer>
+
+            </HorizontallyCentredContainer>
         </HomePageContainer>
     )
 }

@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { HouseIcon, BoardIcon } from '../Icon';
-import { AccountMenuPopUp } from '../Menu'
+import { AccountMenuPopUp } from '../Menu';
+import history from '../../history';
 
 const NavbarContainer = styled.nav`
   background-color: rgba(0, 0, 0, 0.32);
@@ -13,6 +14,13 @@ const NavbarContainer = styled.nav`
   position: fixed;
   width: 100vw;
   z-index: 10;
+  ${props => {
+    if (props.fixedColour) {
+      return`
+        background: #016aa7;
+      `
+    }
+  }}
   ${(props) => {
     if (props.secondaryNav) {
       return `
@@ -137,13 +145,13 @@ const Divider = styled.span`
   margin: 8px 8px 12px 4px;
 `;
 
-export const NavbarPrimary = ({ userData, getUserInitials, setShowAccountMenu, showAccountMenu }) => {
+export const NavbarPrimary = ({ userData, getUserInitials, setShowAccountMenu, showAccountMenu, setShowNavbar }) => {
   if (!userData) {
     return null
   }
 
   return (
-    <NavbarContainer>
+    <NavbarContainer fixedColour={history.location.pathname === "/"}>
       <span>
         <NavbarButton>
           <HouseIcon />
@@ -162,7 +170,7 @@ export const NavbarPrimary = ({ userData, getUserInitials, setShowAccountMenu, s
         <NavbarButton />
         <NavbarButton onClick={() => setShowAccountMenu(true)} round>{getUserInitials()}</NavbarButton>
       </span>
-      <AccountMenuPopUp getUserInitials={getUserInitials} userData={userData} showAccountMenu={showAccountMenu} setShowAccountMenu={setShowAccountMenu}/>
+      <AccountMenuPopUp setShowNavbar={setShowNavbar} getUserInitials={getUserInitials} userData={userData} showAccountMenu={showAccountMenu} setShowAccountMenu={setShowAccountMenu}/>
     </NavbarContainer>
   );
 };
@@ -172,7 +180,7 @@ const ProjectMemberContainers = styled.div`
   align-items: center;
 `;
 
-export const NavbarSecondary = ({ boardData, userData, getUserInitials }) => {
+export const NavbarSecondary = ({ boardData, getUserInitials }) => {
   return (
     <NavbarContainer secondaryNav>
       <SecondaryNavInnerContainer secondaryNav>

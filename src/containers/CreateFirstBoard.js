@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { firestore } from "../utils/firebase";
 import { FirstColumn, SecondColumn } from "../components/FirstBoardCreation";
@@ -15,7 +15,7 @@ const CreateFirstBoardContainer = styled.div`
   }
 `;
 
-export default ({ user }) => {
+export default ({ user, setShowNavbar }) => {
   const [boardName, setBoardName] = useState("");
   const [listNames, setListNames] = useState(["Things To Do", "Doing", "Done"]);
   const [cardNames, setCardNames] = useState(["", "", ""]);
@@ -25,6 +25,11 @@ export default ({ user }) => {
   );
 
   let hasBoardBeenCreated = false;
+
+
+  useEffect(() => {
+    setShowNavbar(false);
+  })
 
   const createLists = async (index, boardId) => {
     // dynamically check card names and render appropriately - "" is not a name and shouldn't be treated as such
@@ -89,6 +94,7 @@ export default ({ user }) => {
     listNames.map(async (name, index) => {
       await createLists(index, boardId);
     });
+    setShowNavbar(true)
 
     history.push(`boards/${boardId}`)
   };

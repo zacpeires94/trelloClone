@@ -21,14 +21,10 @@ export default () => {
 
   const createNewUser = async (event) => {
     event.preventDefault();
-    await createUser(email, password, fullName);
-      //check to see if email exists already in db - firebase admin sdk
-    firebase.auth().onAuthStateChanged((user) => {
-      console.log(user, user.email)
-      if (user && user.email === email) {
+    const response = await createUser(email, password, fullName);
+
+    if (typeof response === 'string')
         history.push('/create-first-board')
-      }
-    });
   };
 
 

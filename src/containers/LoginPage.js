@@ -12,13 +12,13 @@ export default () => {
 
   const loginExistingUser = async (event) => {
     event.preventDefault();
-    await loginUser(email, password);
-    firebase.auth().onAuthStateChanged((user) => {
-      console.log(user, user.email)
-      if (user && user.email === email) {
-        history.push('/create-first-board')
-      }
-    });
+    const response = await loginUser(email, password)
+    // a response could be 'The password is invalid or the user does not have a password.'
+    // use for password validation / error message
+    console.log(response)
+    if (response.operationType === 'signIn') {
+      history.push('/')
+    }
   };
 
 

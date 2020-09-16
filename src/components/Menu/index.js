@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { CrossSign } from '../Icon';
 import { MidSizeText, SmallGreyText } from '../Typography';
+import { logOut } from '../../api/user';
 
 
 const AccountMenuPopUpContainer = styled.div`
@@ -97,7 +98,7 @@ const VerticalTextContainer = styled.div`
  
 `
 
-export const AccountMenuPopUp = ({ getUserInitials, userData, setShowAccountMenu, showAccountMenu }) => {
+export const AccountMenuPopUp = ({ getUserInitials, userData, setShowAccountMenu, showAccountMenu, setShowNavbar }) => {
     return (
         <AccountMenuPopUpContainer showAccountMenu={showAccountMenu}>
             <Header>
@@ -119,8 +120,8 @@ export const AccountMenuPopUp = ({ getUserInitials, userData, setShowAccountMenu
                     </SmallGreyText>
                 </VerticalTextContainer>
             </GreyContainer>
-            <GreyContainer pointer hover>
-                <MidSizeText >
+            <GreyContainer pointer hover onClick={() => { logOut(); setShowAccountMenu(false); setShowNavbar(false)}}>
+                <MidSizeText>
                     Log Out
                 </MidSizeText>
             </GreyContainer>

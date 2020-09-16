@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Redirect } from "react";
 import history from "./history";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import {
   SingleBoard,
   SignupPage,
@@ -22,6 +22,8 @@ const App = () => {
   const [showNavbar, setShowNavbar] = useState(null);
 
   useEffect(() => {
+    console.log('hello')
+
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         setUid(user.uid);
@@ -39,22 +41,18 @@ const App = () => {
           history.location.pathname.includes("/login") ||
           history.location.pathname.includes("/create-first-board")
         ) {
-          console.log(userData);
           setShowNavbar(false);
         } else {
-          console.log(userData);
           setShowNavbar(true);
         }
       }
       setHasCheckedForUser(true);
     });
 
-    console.log(uid);
   }, []);
 
   const getUserInitials = () => {
     let userInitials;
-    console.log(userData);
     let separatedUserName = userData.fullName.split(" ");
     if (separatedUserName.length === 2) {
       userInitials = `${separatedUserName[0][0].toUpperCase()}${separatedUserName[1][0].toUpperCase()}`;
@@ -68,6 +66,7 @@ const App = () => {
     return null;
   }
 
+
   return (
     <div className="App">
       {
@@ -78,6 +77,7 @@ const App = () => {
           showAccountMenu={showAccountMenu}
           getUserInitials={getUserInitials}
           setShowAccountMenu={setShowAccountMenu}
+          setShowNavbar={setShowNavbar}
         />
       ) : null}
       <Switch>
@@ -85,7 +85,7 @@ const App = () => {
           exact
           path="/"
           render={(props) =>
-            uid ? <HomePage user={uid} userData={userData} /> : <SignupPage />
+            uid ? <HomePage user={uid} userData={userData}  setShowNavbar={setShowNavbar}/> : <SignupPage />
           }
         />
 
@@ -99,7 +99,7 @@ const App = () => {
         <Route
           exact
           path="/create-first-board"
-          render={(props) => <CreateFirstBoard user={uid} />}
+          render={(props) => <CreateFirstBoard user={uid} setShowNavbar={setShowNavbar}/>}
         />
         {/* introduce a redirect, so user couldn't go to this page if they have a board */}
       </Switch>
@@ -107,4 +107,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withRouter(App);
