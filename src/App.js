@@ -42,6 +42,7 @@ const App = () => {
           history.location.pathname.includes("/create-first-board")
         ) {
           setShowNavbar(false);
+          console.log('hello', history.location.pathname)
         } else {
           setShowNavbar(true);
         }
@@ -66,6 +67,7 @@ const App = () => {
     return null;
   }
 
+  console.log(showNavbar)
 
   return (
     <div className="App">

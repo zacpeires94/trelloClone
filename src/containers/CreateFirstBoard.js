@@ -26,11 +26,6 @@ export default ({ user, setShowNavbar }) => {
 
   let hasBoardBeenCreated = false;
 
-
-  useEffect(() => {
-    setShowNavbar(false);
-  })
-
   const createLists = async (index, boardId) => {
     // dynamically check card names and render appropriately - "" is not a name and shouldn't be treated as such
     if (index === 0 && cardNames.length) {
@@ -91,10 +86,11 @@ export default ({ user, setShowNavbar }) => {
         );
     }
 
+    setShowNavbar(true)
+
     listNames.map(async (name, index) => {
       await createLists(index, boardId);
     });
-    setShowNavbar(true)
 
     history.push(`boards/${boardId}`)
   };

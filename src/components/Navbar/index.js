@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import styled from "styled-components";
 import { HouseIcon, BoardIcon } from '../Icon';
 import { AccountMenuPopUp } from '../Menu';
@@ -27,6 +28,7 @@ const NavbarContainer = styled.nav`
             padding: 8px 4px 8px 8px;
             background: rgba(0,0,0,.24);
             top: 40px;
+            z-index: 5;
           `;
     }
   }}

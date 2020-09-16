@@ -10,7 +10,7 @@ width: 304px;
 top: 44px;
 right: 4px;
 background: white;
-z-index: 5;
+z-index: 15;
     position: fixed;
     border-radius: 3px;
     box-shadow: 0 8px 16px -4px rgba(9,30,66,.25), 0 0 0 1px rgba(9,30,66,.08);
