@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { HouseIcon, BoardIcon } from '../Icon';
+import { AccountMenuPopUp } from '../Menu'
 
 const NavbarContainer = styled.nav`
   background-color: rgba(0, 0, 0, 0.32);
@@ -11,6 +12,7 @@ const NavbarContainer = styled.nav`
   justify-content: space-between;
   position: fixed;
   width: 100vw;
+  z-index: 10;
   ${(props) => {
     if (props.secondaryNav) {
       return `
@@ -135,7 +137,11 @@ const Divider = styled.span`
   margin: 8px 8px 12px 4px;
 `;
 
-export const NavbarPrimary = ({ userData, getUserInitials, setShowAccountMenu }) => {
+export const NavbarPrimary = ({ userData, getUserInitials, setShowAccountMenu, showAccountMenu }) => {
+  if (!userData) {
+    return null
+  }
+
   return (
     <NavbarContainer>
       <span>
@@ -156,6 +162,7 @@ export const NavbarPrimary = ({ userData, getUserInitials, setShowAccountMenu })
         <NavbarButton />
         <NavbarButton onClick={() => setShowAccountMenu(true)} round>{getUserInitials()}</NavbarButton>
       </span>
+      <AccountMenuPopUp getUserInitials={getUserInitials} userData={userData} showAccountMenu={showAccountMenu} setShowAccountMenu={setShowAccountMenu}/>
     </NavbarContainer>
   );
 };

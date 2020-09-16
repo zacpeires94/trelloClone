@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from "react";
 import firebase from 'firebase'
 import styled from "styled-components";
-import { NavbarPrimary, NavbarSecondary } from "../components/Navbar";
+import { NavbarSecondary } from "../components/Navbar";
 import { firestore } from "../utils/firebase";
 import { DropDown } from "../components/DropDown";
 import { AccountMenuPopUp } from '../components/Menu';
 import history from "../history";
 import { AddListButton, EnterListTitle } from "../components/Button";
-
-const HomePageContainer = styled.div`
-  background: #e48a9a;
-  min-height: 100vh;
-  overflow-y: auto;
-  position: relative;
-`;
+import { HomePageContainer } from '../components/Container'
 
 const DropDownContainer = styled.div`
   display: flex;
@@ -25,12 +19,10 @@ const InternalHomePageContainer = styled.div`
   padding-right: 8px;
 `
 
-export default ({ user  }) => {
+export default ({ user, userData  }) => {
   const [userLists, setUserLists] = useState([]);
   const [newListName, setNewListName] = useState("");
   const [boardData, setBoardData] = useState(null);
-  const [userData, setUserData] = useState(null)
-  const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [
     showDropDownForNamingNewList,
     setShowDropDownForNamingNewList,
@@ -57,12 +49,6 @@ export default ({ user  }) => {
       setUserLists(boardLists)
     };
 
-    const getUserData = async () =>{
-      const requestedUser = await firestore.collection('users').doc(user).get();
-      setUserData(requestedUser.data());
-    }
-
-    getUserData();
     getBoardData();
   }, []);
 
@@ -78,6 +64,17 @@ export default ({ user  }) => {
 
   }
 
+
+
+  const LogOut = async () => {
+   await firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+    }, function(error) {
+      // An error happened.
+    }); 
+  }
+
+
   const getUserInitials = () => {
     let userInitials;
     let separatedUserName = userData.fullName.split(" ")
@@ -90,24 +87,12 @@ export default ({ user  }) => {
   }
 
 
-  const LogOut = async () => {
-   await firebase.auth().signOut().then(function() {
-      // Sign-out successful.
-    }, function(error) {
-      // An error happened.
-    });
-    
-  }
-
-
   if (!userLists.length) {
     return null;
   }
 
   return (
-    <HomePageContainer>
-      <AccountMenuPopUp getUserInitials={getUserInitials} userData={userData} showAccountMenu={showAccountMenu} setShowAccountMenu={setShowAccountMenu}/>
-      <NavbarPrimary userData={userData} getUserInitials={getUserInitials} setShowAccountMenu={setShowAccountMenu}/>
+    <HomePageContainer singlePage>
       <NavbarSecondary boardData={boardData} userData={userData} getUserInitials={getUserInitials}/>
       <InternalHomePageContainer>
       <DropDownContainer>

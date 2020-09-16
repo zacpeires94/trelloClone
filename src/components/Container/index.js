@@ -7,3 +7,21 @@ export const FullPageCentredContainer = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+export const HomePageContainer = styled.div`
+${props => {
+  if (props.singlePage) {
+    return`
+    background: #e48a9a;
+    `
+  } else if (props.homePage) {
+    return`
+      background: #fafbfc;
+    `
+  }
+}}
+
+  min-height: 100vh;
+  overflow-y: auto;
+  position: relative;
+`;
