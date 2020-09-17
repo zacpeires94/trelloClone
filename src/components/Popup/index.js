@@ -59,7 +59,6 @@ const ColourSquareContainer = styled.ul`
 const ColouredSquare = styled.li`
   height: 28px;
   width: 28px;
-  margin-bottom: 15px;
   margin-bottom: 6px;
   background: ${(props) => props.background};
   border-radius: 3px;

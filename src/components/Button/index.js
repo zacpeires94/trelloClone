@@ -111,7 +111,7 @@ export const EnterListTitle = ({showDropDownForNamingNewList, setShowDropDownFor
             <EnterListTitleInput placeholder="Enter list title..." autoComplete="off" value={newListName} onChange={(event) => setNewListName(event.target.value)}/>
              <ButtonContainer onClick={() => { AddListToBoard();
             setShowDropDownForNamingNewList(false) }} >
-            <AddCardButton newList>
+            <AddCardButton newList disabled={!newListName}>
                 Add List
             </AddCardButton>
             </ButtonContainer>

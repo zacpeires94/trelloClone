@@ -47,7 +47,8 @@ export default ({ user, userData, setShowNavbar  }) => {
             boardLists[subDoc.data().position] = subDoc.data()
         });
     });
-
+  
+    console.log(boardLists)
       setUserLists(boardLists)
     };
 
@@ -62,8 +63,9 @@ export default ({ user, userData, setShowNavbar  }) => {
       position: userLists.length,
       cards: [],
     })
-    setUserLists([...userLists, {name: newListName, cards: []}])
-
+    console.log([...userLists, {name: newListName, cards: []}])
+    setUserLists([...userLists, {name: newListName, cards: []}]);
+    setNewListName("")
   }
 
 
@@ -93,7 +95,7 @@ export default ({ user, userData, setShowNavbar  }) => {
         {
         userLists.length ? 
         userLists.map((list, index) => {
-          return <DropDown cards={list.cards} listName={list.name} />;
+          return <DropDown cards={list.cards} listName={list.name} boardId={boardId} />;
         })
         : null
       }

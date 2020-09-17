@@ -3,6 +3,7 @@ import { ColumnTitle } from '../Typography';
 import { AddCardButton } from '../Button';
 import { PlusSign, CloseCardEntry } from '../Icon';
 import styled from "styled-components";
+import { firestore } from '../../utils/firebase'
 
 const DropDownContainer = styled.div`
   min-width: 272px;
@@ -114,7 +115,7 @@ const WhiteListCardTextArea = styled.textarea`
 `;
 
 
-export const DropDown = ({cards, listName}) => {
+export const DropDown = ({cards, listName, boardId}) => {
   const [taskList, setTaskList] = useState(cards);
   const [newCardTitle, setNewCardTitle] = useState("");
   const newTextBoxRef = useRef(null);
@@ -128,16 +129,24 @@ export const DropDown = ({cards, listName}) => {
     if (newTextBoxRef.current) {
       newTextBoxRef.current.focus();
     }
+
+    console.log(taskList)
   }, [createNewCard]);
 
   const enterTitle = (event) => {
     setNewCardTitle(event.target.value);
   };
 
-  const addCard = () => {
+  const addCard = async () => {
     const newTaskList = taskList.slice(0, taskList.length - 1);
     setTaskList([...newTaskList, { name: newCardTitle }]);
+    await firestore.collection('boards').doc(boardId).collection('lists').doc(listName).update({
+      cards: [...newTaskList, {name: newCardTitle, position: taskList.length -1}]
+    }
+   
+    )
     setNewCardTitle("");
+
   };
 
 
