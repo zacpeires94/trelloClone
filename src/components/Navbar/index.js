@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { HouseIcon, BoardIcon } from '../Icon';
-import { AccountMenuPopUp } from '../Menu';
-import history from '../../history';
+import { HouseIcon, BoardIcon } from "../Icon";
+import { AccountMenuPopUp } from "../Menu";
+import history from "../../history";
 
 const NavbarContainer = styled.nav`
   background-color: rgba(0, 0, 0, 0.32);
@@ -15,11 +15,11 @@ const NavbarContainer = styled.nav`
   position: fixed;
   width: 100vw;
   z-index: 10;
-  ${props => {
+  ${(props) => {
     if (props.fixedColour) {
-      return`
+      return `
         background: #016aa7;
-      `
+      `;
     }
   }}
   ${(props) => {
@@ -147,41 +147,45 @@ const Divider = styled.span`
   margin: 8px 8px 12px 4px;
 `;
 
-export const NavbarPrimary = ({ userData, getUserInitials, setShowAccountMenu, showAccountMenu, setShowNavbar }) => {
+export const NavbarPrimary = ({
+  userData,
+  getUserInitials,
+  setShowAccountMenu,
+  showAccountMenu,
+  setShowNavbar,
+}) => {
   if (!userData) {
-    return null
-  }
-
-  if (
-    history.location.pathname.includes("/sign-up") ||
-    history.location.pathname.includes("/login") ||
-    history.location.pathname.includes("/create-first-board")
-  ) {
-    setShowNavbar(false);
-  } else {
-    setShowNavbar(true);
+    return null;
   }
 
   return (
     <NavbarContainer fixedColour={history.location.pathname === "/"}>
       <span>
         <NavbarButton>
-          <HouseIcon />
+          <Link to="/">
+            <HouseIcon />
+          </Link>
         </NavbarButton>
         <NavbarButton showBoards>
           <BoardIcon />
-          <p>
-          Boards
-          </p>
+          <p>Boards</p>
         </NavbarButton>
         <NavbarButton searchBar />
       </span>
       <span>
         <NavbarButton />
         <NavbarButton />
-        <NavbarButton onClick={() => setShowAccountMenu(true)} round>{getUserInitials()}</NavbarButton>
+        <NavbarButton onClick={() => setShowAccountMenu(true)} round>
+          {getUserInitials()}
+        </NavbarButton>
       </span>
-      <AccountMenuPopUp setShowNavbar={setShowNavbar} getUserInitials={getUserInitials} userData={userData} showAccountMenu={showAccountMenu} setShowAccountMenu={setShowAccountMenu}/>
+      <AccountMenuPopUp
+        setShowNavbar={setShowNavbar}
+        getUserInitials={getUserInitials}
+        userData={userData}
+        showAccountMenu={showAccountMenu}
+        setShowAccountMenu={setShowAccountMenu}
+      />
     </NavbarContainer>
   );
 };
