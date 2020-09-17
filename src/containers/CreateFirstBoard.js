@@ -15,7 +15,7 @@ const CreateFirstBoardContainer = styled.div`
   }
 `;
 
-export default ({ user, setShowNavbar }) => {
+export default ({ user }) => {
   const [boardName, setBoardName] = useState("");
   const [listNames, setListNames] = useState(["Things To Do", "Doing", "Done"]);
   const [cardNames, setCardNames] = useState(["", "", ""]);
@@ -66,7 +66,8 @@ export default ({ user, setShowNavbar }) => {
         .add({
           name: boardName,
           dateCreated: new Date().toISOString().slice(0, 10),
-          owner: user
+          owner: user,
+          background: '#e48a9a'
         });
       boardId = newlyCreatedBoard.id;
       await firestore
@@ -74,19 +75,18 @@ export default ({ user, setShowNavbar }) => {
         .doc(user)
         .set(
           {
-            projects: {
+            projects: [{
               name: boardName,
               dateCreated: new Date().toISOString().slice(0, 10),
-              uid: boardId
-            },
+              uid: boardId,
+              background: '#e48a9a'
+            }],
           },
           {
             merge: true,
           }
         );
     }
-
-    setShowNavbar(true)
 
     listNames.map(async (name, index) => {
       await createLists(index, boardId);

@@ -6,9 +6,13 @@ import { LoginPageForm } from '../components/Form';
 import firebase from "firebase";
 import history from "../history";
 
-export default () => {
+export default ({ setShowNavbar }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // useEffect(() =>{
+  //   setShowNavbar(false);
+  // }, [])
 
   const loginExistingUser = async (event) => {
     event.preventDefault();

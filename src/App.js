@@ -22,8 +22,6 @@ const App = () => {
   const [showNavbar, setShowNavbar] = useState(null);
 
   useEffect(() => {
-    console.log('hello')
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         setUid(user.uid);
@@ -36,19 +34,24 @@ const App = () => {
           setUserData(requestedUser.data());
         };
         getUserData();
-        if (
-          history.location.pathname.includes("/sign-up") ||
-          history.location.pathname.includes("/login") ||
-          history.location.pathname.includes("/create-first-board")
-        ) {
-          setShowNavbar(false);
-          console.log('hello', history.location.pathname)
-        } else {
-          setShowNavbar(true);
-        }
+   
       }
       setHasCheckedForUser(true);
     });
+
+    const CheckWhetherToShowNavbar = () => {
+      if (
+        history.location.pathname.includes("/sign-up") ||
+        history.location.pathname.includes("/login") ||
+        history.location.pathname.includes("/create-first-board")
+      ) {
+        setShowNavbar(false);
+      } else {
+        setShowNavbar(true);
+      }
+    }
+
+    CheckWhetherToShowNavbar();
 
   }, []);
 
@@ -66,8 +69,6 @@ const App = () => {
   if (!hasCheckedForUser) {
     return null;
   }
-
-  console.log(showNavbar)
 
   return (
     <div className="App">
@@ -87,21 +88,20 @@ const App = () => {
           exact
           path="/"
           render={(props) =>
-            uid ? <HomePage user={uid} userData={userData}  setShowNavbar={setShowNavbar}/> : <SignupPage />
+            uid ? <HomePage user={uid} userData={userData} setShowNavbar={setShowNavbar}/> : <SignupPage />
           }
         />
-
         <Route
           exact
           path="/boards/:boardName"
-          render={(props) => <SingleBoard user={uid} userData={userData} />}
+          render={(props) => <SingleBoard user={uid} userData={userData} setShowNavbar={setShowNavbar} />}
         />
         <Route exact path="/sign-up" render={(props) => <SignupPage />} />
-        <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/login" render={(props) => <LoginPage  setShowNavbar={setShowNavbar}/>}/>
         <Route
           exact
           path="/create-first-board"
-          render={(props) => <CreateFirstBoard user={uid} setShowNavbar={setShowNavbar}/>}
+          render={(props) => <CreateFirstBoard user={uid} />}
         />
         {/* introduce a redirect, so user couldn't go to this page if they have a board */}
       </Switch>

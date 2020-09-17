@@ -120,7 +120,7 @@ export const AccountMenuPopUp = ({ getUserInitials, userData, setShowAccountMenu
                     </SmallGreyText>
                 </VerticalTextContainer>
             </GreyContainer>
-            <GreyContainer pointer hover onClick={() => { logOut(); setShowAccountMenu(false); setShowNavbar(false)}}>
+            <GreyContainer pointer hover onClick={() => {setShowNavbar(false); logOut(); setShowAccountMenu(false)}}>
                 <MidSizeText>
                     Log Out
                 </MidSizeText>

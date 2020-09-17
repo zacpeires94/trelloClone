@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from 'react-router-dom';
 import styled from "styled-components";
 import { HouseIcon, BoardIcon } from '../Icon';
@@ -152,6 +152,16 @@ export const NavbarPrimary = ({ userData, getUserInitials, setShowAccountMenu, s
     return null
   }
 
+  if (
+    history.location.pathname.includes("/sign-up") ||
+    history.location.pathname.includes("/login") ||
+    history.location.pathname.includes("/create-first-board")
+  ) {
+    setShowNavbar(false);
+  } else {
+    setShowNavbar(true);
+  }
+
   return (
     <NavbarContainer fixedColour={history.location.pathname === "/"}>
       <span>
@@ -163,7 +173,6 @@ export const NavbarPrimary = ({ userData, getUserInitials, setShowAccountMenu, s
           <p>
           Boards
           </p>
-     
         </NavbarButton>
         <NavbarButton searchBar />
       </span>

@@ -12,7 +12,8 @@ export const HomePageContainer = styled.div`
 ${props => {
   if (props.singlePage) {
     return`
-    background: #e48a9a;
+    background: ${props.background};
+
     `
   } else if (props.homePage) {
     return`

@@ -19,7 +19,7 @@ const InternalHomePageContainer = styled.div`
   padding-right: 8px;
 `
 
-export default ({ user, userData  }) => {
+export default ({ user, userData, setShowNavbar  }) => {
   const [userLists, setUserLists] = useState([]);
   const [newListName, setNewListName] = useState("");
   const [boardData, setBoardData] = useState(null);
@@ -34,6 +34,8 @@ export default ({ user, userData  }) => {
   // })
 
   useEffect(() => {
+    setShowNavbar(true)
+
     const getBoardData = async () => {
       let boardLists = []
       console.log(boardId)
@@ -82,7 +84,7 @@ export default ({ user, userData  }) => {
   }
 
   return (
-    <HomePageContainer singlePage>
+    <HomePageContainer singlePage background={boardData.background}>
       <NavbarSecondary boardData={boardData} userData={userData} getUserInitials={getUserInitials}/>
       <InternalHomePageContainer>
       <DropDownContainer>
