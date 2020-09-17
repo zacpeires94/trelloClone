@@ -59,6 +59,7 @@ const ColourSquareContainer = styled.ul`
 const ColouredSquare = styled.li`
   height: 28px;
   width: 28px;
+  margin-bottom: 15px;
   margin-bottom: 6px;
   background: ${(props) => props.background};
   border-radius: 3px;
@@ -76,9 +77,7 @@ const CreateBoardButton = styled.button`
   margin-bottom: 8px;
   padding: 6px 12px;
   margin: 8px 4px 8px 0;
-  :hover {
-    background-color: #61bd4f;
-  }
+
 
   ${(props) => {
     if (props.disabled) {
@@ -89,6 +88,12 @@ const CreateBoardButton = styled.button`
             cursor: not-allowed;
             background-color: #f4f5f7;
             `;
+    } else {
+        return`
+        :hover {
+            background-color: #61bd4f;
+          }
+        `
     }
   }}
 `;
@@ -98,6 +103,7 @@ export const NewBoardInput = ({
   setBoardBackground,
   boardTitle,
   setBoardTitle,
+  createNewBoard
 }) => {
   console.log(boardBackground);
   return (
@@ -133,8 +139,8 @@ export const NewBoardInput = ({
               onClick={() => setBoardBackground("#e48a9a")}
             />
             <ColouredSquare
-              background={"#800080"}
-              onClick={() => setBoardBackground("#800080")}
+              background={"#a917a9"}
+              onClick={() => setBoardBackground("#a917a9")}
             />
             <ColouredSquare
               background={"#008080"}
@@ -151,7 +157,7 @@ export const NewBoardInput = ({
           </ColourSquareContainer>
         </AddBoardHorizontalContainer>
         <AddBoardHorizontalContainer>
-          <CreateBoardButton disabled={!boardTitle.length}>
+          <CreateBoardButton disabled={!boardTitle.length} onClick={() => createNewBoard()}>
             Create Board
           </CreateBoardButton>
         </AddBoardHorizontalContainer>

@@ -41,7 +41,7 @@ export default ({ user, userData, setShowNavbar  }) => {
       console.log(boardId)
       const requestedBoardInfo = await firestore.collection('boards').doc(boardId).get();
       setBoardData(requestedBoardInfo.data())
-
+      console.log(requestedBoardInfo.data())
       await firestore.collection('boards/' + boardId + '/lists').get().then((subCollectionSnapshot) => {
         subCollectionSnapshot.forEach((subDoc) => {
             boardLists[subDoc.data().position] = subDoc.data()
@@ -79,19 +79,24 @@ export default ({ user, userData, setShowNavbar  }) => {
   }
 
 
-  if (!userLists.length) {
+  if (boardData === null) {
     return null;
   }
+
+
 
   return (
     <HomePageContainer singlePage background={boardData.background}>
       <NavbarSecondary boardData={boardData} userData={userData} getUserInitials={getUserInitials}/>
       <InternalHomePageContainer>
       <DropDownContainer>
-        {userLists.map((list, index) => {
-      
+        {
+        userLists.length ? 
+        userLists.map((list, index) => {
           return <DropDown cards={list.cards} listName={list.name} />;
-        })}
+        })
+        : null
+      }
         <AddListButton
           showDropDownForNamingNewList={showDropDownForNamingNewList}
           setShowDropDownForNamingNewList={setShowDropDownForNamingNewList}

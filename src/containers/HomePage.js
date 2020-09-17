@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { HomePageContainer } from "../components/Container";
+import { firestore } from '../utils/firebase';
 import { NewBoardInput } from '../components/Popup';
 
 const HorizontalContainer = styled.div`
@@ -30,9 +31,9 @@ const BoardAndTitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  position: relative;
   bottom: 200px;
-  right: 100px;
+  max-width: 80%;
+  padding: 0 15px;
 `;
 
 const BoldText = styled.p`
@@ -51,6 +52,7 @@ const BoldText = styled.p`
 const BoardsContainer = styled.div`
   display: flex;
   margin-top: 15px;
+  flex-wrap: wrap;
 `;
 
 const BoardBody = styled.div`
@@ -62,6 +64,7 @@ text-align: left;
 cursor: pointer;
 position: relative;
 margin-right: 15px;
+margin-bottom: 15px;
 span {
 
   left: 0;
@@ -110,15 +113,61 @@ const PersonSvg = () => {
   );
 };
 
-export default ({ userData, setShowNavbar }) => {
+export default ({ userData, setShowNavbar, user, setUserData }) => {
   const [showNewProjectPopup, setShowNewProjectPopup] = useState(false);
   const [boardTitle, setBoardTitle] = useState('');
-  const [boardBackground, setBoardBackground] = useState('rgb(0, 121, 191)') 
+  const [boardBackground, setBoardBackground] = useState('rgb(0, 121, 191)');
 
   useEffect(() => {
     setShowNavbar(true);
-    console.log(userData);
+    console.log(userData)
   });
+
+  const createNewBoard = async () => {
+      const newlyCreatedBoard = await firestore
+          .collection("boards")
+          .add({
+            name: boardTitle,
+            dateCreated: new Date().toISOString().slice(0, 10),
+            owner: user,
+            background: boardBackground
+          });
+          console.log(newlyCreatedBoard)
+        let boardId = newlyCreatedBoard.id;
+
+        await firestore
+          .collection("users")
+          .doc(user)
+          .set(
+            {
+              projects: [...userData.projects, {
+                name: boardTitle,
+                dateCreated: new Date().toISOString().slice(0, 10),
+                uid: boardId,
+                background: boardBackground
+              }],
+            },
+            {
+              merge: true,
+            }
+          );
+
+            let updatedData = {...userData}
+            updatedData.projects = [...userData.projects, {
+              name: boardTitle,
+              dateCreated: new Date().toISOString().slice(0, 10),
+              uid: boardId,
+              background: boardBackground
+            }]
+
+          setUserData(updatedData);
+          setShowNewProjectPopup(false);
+          setBoardTitle("");
+      }
+
+
+
+
 
   if (!userData) {
     return null;
@@ -126,7 +175,12 @@ export default ({ userData, setShowNavbar }) => {
 
   return (
     <HomePageContainer homePage>
-      <NewBoardInput boardBackground={boardBackground} setBoardBackground={setBoardBackground} boardTitle={boardTitle} setBoardTitle={setBoardTitle}/>
+      {
+        showNewProjectPopup ? 
+        <NewBoardInput createNewBoard={createNewBoard} boardBackground={boardBackground} setBoardBackground={setBoardBackground} boardTitle={boardTitle} setBoardTitle={setBoardTitle}/>
+        : null
+      }
+
       <HorizontalContainer centre>
         <BoardAndTitleContainer>
           <HorizontalContainer>

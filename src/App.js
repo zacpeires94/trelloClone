@@ -88,7 +88,7 @@ const App = () => {
           exact
           path="/"
           render={(props) =>
-            uid ? <HomePage user={uid} userData={userData} setShowNavbar={setShowNavbar}/> : <SignupPage />
+            uid ? <HomePage user={uid} userData={userData} setShowNavbar={setShowNavbar} setUserData={setUserData}/> : <SignupPage />
           }
         />
         <Route
